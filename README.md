@@ -1,6 +1,9 @@
-# voltdb-javacache
+# voltdb-javacache-sandbox
 
-voltdb-javacache is a Proof-Of-Concept implementation of a [JSR107](https://github.com/jsr107/jsr107spec) compliant Java Cache.
+voltdb-javacache-sandbox is a Proof-Of-Concept implementation of a [JSR107](https://github.com/jsr107/jsr107spec) compliant Java Cache.
+
+it also includes a demo application so you can see it working.
+
 
 ## Description
 

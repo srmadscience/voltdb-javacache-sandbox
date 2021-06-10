@@ -2,8 +2,6 @@
 
 load classes ../lib/cache-api-1.1.1.jar;
 
-load classes ../lib/gson-2.2.2.jar;
-
 load classes ../jars/voltdb-javacache.jar;
 
 file -inlinebatch END_OF_BATCH

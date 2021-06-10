@@ -3,7 +3,8 @@
 cd /home/ubuntu
 . ./.profile
 
-cd voltdb-policysandbox/scripts
+cd voltdb-javacache-sandbox/scripts
 
 sqlcmd --servers=vdb1 < ../ddl/create_db.sql
-java -jar $HOME/bin/addtodeploymentdotxml.jar vdb1,vdb2,vdb3 deployment topics.xml
+sqlcmd --servers=vdb1 < ../ddl/demo_db.sql
+java -jar $HOME/bin/addtodeploymentdotxml.jar vdb1 deployment topics.xml
