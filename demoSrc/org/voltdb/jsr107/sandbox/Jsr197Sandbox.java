@@ -84,6 +84,7 @@ public class Jsr197Sandbox {
 
             for (int i = 0; i < threads; i++) {
                 cacheArray[i] = new VoltDBCache(hostlist, 2, "TestCache", null, null, 9092);
+                cacheArray[i].loadEntryProcessors();
                 sbArray[i] = new CacheSandboxThread(cacheArray[i], userCount, durationSeconds, i, lobSize);
             }
 

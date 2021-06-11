@@ -25,6 +25,9 @@ package jsr107.sandbox;
 
 import java.util.Date;
 
+import org.voltdb.autojar.IsNeededByAVoltDBProcedure;
+
+@IsNeededByAVoltDBProcedure
 public class AirmilesFlight {
     
     String fromAirport;

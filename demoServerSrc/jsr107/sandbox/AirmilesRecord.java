@@ -26,9 +26,12 @@ package jsr107.sandbox;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.voltdb.autojar.IsNeededByAVoltDBProcedure;
+
 /**
  * Hypothetical payload for our KV store.
  */
+@IsNeededByAVoltDBProcedure
 public class AirmilesRecord {
   
     public byte[] randomLob;
