@@ -34,6 +34,8 @@ import org.voltdb.voltutil.stats.SafeHistogramCache;
 
 import com.google.gson.Gson;
 
+import jsr107.sandbox.AirmilesRecord;
+
 public class Jsr197Sandbox {
 
     public Jsr197Sandbox() {

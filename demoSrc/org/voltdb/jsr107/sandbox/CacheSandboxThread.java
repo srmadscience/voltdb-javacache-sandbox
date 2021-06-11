@@ -34,6 +34,7 @@ import com.google.gson.Gson;
 
 import jsr107.AbstractEventTrackingProcedure;
 import jsr107.sandbox.AddNewFlightEntryProcessor;
+import jsr107.sandbox.AirmilesRecord;
 
 /**
  * A thread that will do as many sync transactions as it can for a predefined

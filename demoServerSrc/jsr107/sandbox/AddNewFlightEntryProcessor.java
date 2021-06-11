@@ -54,7 +54,6 @@ import javax.cache.processor.MutableEntry;
 
 import org.voltdb.VoltTable;
 import org.voltdb.autojar.IsNeededByAVoltDBProcedure;
-import org.voltdb.jsr107.sandbox.AirmilesRecord;
 
 import com.google.gson.Gson;
 

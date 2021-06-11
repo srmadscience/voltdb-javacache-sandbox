@@ -21,7 +21,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package org.voltdb.jsr107.sandbox;
+package jsr107.sandbox;
 
 import java.util.Date;
 
