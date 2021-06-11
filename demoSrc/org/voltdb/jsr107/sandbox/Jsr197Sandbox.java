@@ -178,7 +178,7 @@ public class Jsr197Sandbox {
             }
             msg("...done");
 
-            // msg(shc.toString());
+            msg(shc.toString());
 
             msg("Time to create " + userCount + " records in batches of " + batchSize + ": "
                     + shc.get("putAllTotal").getEventTotal());
