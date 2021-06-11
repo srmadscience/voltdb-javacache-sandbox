@@ -2,7 +2,7 @@
 
 load classes ../lib/cache-api-1.1.1.jar;
 
-load classes ../jars/voltdb-javacache.jar;
+load classes ../jars/voltdb-javacache-server.jar;
 
 file -inlinebatch END_OF_BATCH
 
