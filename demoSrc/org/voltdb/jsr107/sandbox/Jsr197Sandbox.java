@@ -84,10 +84,10 @@ public class Jsr197Sandbox {
 
             for (int i = 0; i < threads; i++) {
                 cacheArray[i] = new VoltDBCache(hostlist, 2, "TestCache", "/home/ubuntu/voltdb-javacache-sandbox/jars", "jsr107.sandbox", 9092);
-                cacheArray[i].loadEntryProcessors();
                 sbArray[i] = new CacheSandboxThread(cacheArray[i], userCount, durationSeconds, i, lobSize);
             }
 
+            cacheArray[0].loadEntryProcessors();
             cacheArray[0].setEvents(false);
 
             msg("Step 1: Remove any old records...");
