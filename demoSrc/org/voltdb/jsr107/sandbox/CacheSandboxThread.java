@@ -250,9 +250,9 @@ public class CacheSandboxThread implements Runnable {
     private void doInvocations(String userId) {
 
         long startMs = System.currentTimeMillis();
-        Object foo = voltDBCache.invoke(userId, addnewFlight, randomAirport(), randomAirport(), new Date(),
+        Object preResult = voltDBCache.invoke(userId, addnewFlight, randomAirport(), randomAirport(), new Date(),
                 r.nextInt(20));
-        VoltDBEntryProcessorResult result = (VoltDBEntryProcessorResult) foo;
+        VoltDBEntryProcessorResult result = (VoltDBEntryProcessorResult) preResult;
 
         if (result.get().getAppStatus() == AbstractEventTrackingProcedure.OK) {
             shc.reportLatency("invoke_ok", startMs, "", 1000);

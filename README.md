@@ -2,14 +2,14 @@
 
 voltdb-javacache-sandbox is a Proof-Of-Concept implementation of a [JSR107](https://github.com/jsr107/jsr107spec) compliant Java Cache.
 
-it also includes a demo application so you can see it working.
+it also includes a sandbox application so you can see it working.
 
 
 ## Description
 
 This project has a class called [VoltDBCache](src/org/voltdb/jsr107/VoltDBCache.java) which implements [javax.cache.Cache](https://github.com/jsr107/jsr107spec/blob/master/src/main/java/javax/cache/Cache.java). 
 
-This API is used as a basis for multiple imlementations:
+This API is used as a basis for multiple implementations:
 
 * Hazelcast / GridGain
 * Oracle Coherence
@@ -47,7 +47,11 @@ We also have an output stream that is connected to a Kafka Topic:
 
 This is used by our implementation of [CacheEventConsumer](src/org/voltdb/jsr107/CacheEventConsumer.java)
 
-## Usage
+## Sandbox Usage
+
+
+
+## General Usage
 
     org.voltdb.jsr107.VoltDBCache.VoltDBCache(String hostnames, int retryAttempts, String cacheName, String entryProcessorDirName, String entryProcessorPackageName, int kafkaPort)
     
@@ -84,14 +88,15 @@ We use VoltDB's topics to implement the Event Listeners.
 
 ### Sync operations
 
-The API is fundamentally sync in nature, whereas VoltDB is fundamentally async. We may extend the base Cache classes in future to resovle this. It is interesting to note that several imoplementers of Cache added their own async extensions. 
+The API is fundamentally sync in nature, whereas VoltDB is fundamentally async. We may extend the base Cache classes in future to resolve this. It is interesting to note that several implementers of Cache added their own async extensions. 
 
 ### HA and group methods
 
-By default the Cache will make as many attempts as it needs to to communicate with VoltDB. In the current implemention this is not guranteed for:
+By default the Cache will make as many attempts as it needs to to communicate with VoltDB. In the current implementation this is not guaranteed for:
 
 * [getAll](https://github.com/jsr107/jsr107spec/blob/master/src/main/java/javax/cache/Cache.java#L121) 
 * [putAll](https://github.com/jsr107/jsr107spec/blob/master/src/main/java/javax/cache/Cache.java#L278)
+* [invoke](https://github.com/jsr107/jsr107spec/blob/master/src/main/java/javax/cache/Cache.java#L603)
 * [invokeAll](https://github.com/jsr107/jsr107spec/blob/master/src/main/java/javax/cache/Cache.java#L640)
 
 ### invoke and invokeAll
@@ -106,11 +111,26 @@ the iterator() method attempts to unload the entire contents of the Cache into a
 
 Any class that implements EntryProcessor can be used by Invoke,  but implementors need to remember that it runs inside VoltDB, possibly more than once at the same time, so:
 
-* It must be determistic in nature. No random behaviour, network activity etc.
+* It must be deterministic in nature. No random behavior, network activity etc.
 * It needs to be reasonably fast.
 * It needs to exist as a stand alone class file in the directory whose name is passed in to VoltDBCache at creation time
 * All EntryProcessors need to be in the package whose name is passed in to VoltDBCache at creation time
 * It must use the org.voltdb.autojar.IsNeededByAVoltDBProcedure annotation.
+
+Making updates and returning data:
+
+* Changes are made by manipulating the [MutableEntry](https://github.com/jsr107/jsr107spec/blob/master/src/main/java/javax/cache/processor/MutableEntry.java) passed in as a parameter.
+* An implementation may return either null or VoltTable[], which will be sent back to the client.
+
+Error Handling:
+
+* Implementors of EntryProcessor should always check the status code to see what happened. An example of this is in the [sandbox code](https://github.com/srmadscience/voltdb-javacache-sandbox/blob/main/demoSrc/org/voltdb/jsr107/sandbox/CacheSandboxThread.java#L250).
+* The two normal results are [AbstractEventTrackingProcedure.OK](https://github.com/srmadscience/voltdb-javacache-sandbox/blob/main/serverSrc/jsr107/AbstractEventTrackingProcedure.java#L73) and [AbstractEventTrackingProcedure.OK_BUT_NOT_FOUND](https://github.com/srmadscience/voltdb-javacache-sandbox/blob/main/serverSrc/jsr107/AbstractEventTrackingProcedure.java#L74), which occurs when you tried to call invoke on a non-existent record.
+* Other [responses](https://github.com/srmadscience/voltdb-javacache-sandbox/blob/main/serverSrc/jsr107/AbstractEventTrackingProcedure.java#L75) are errors, and in each case the Java stack trace will be (returned)[https://github.com/srmadscience/voltdb-javacache-sandbox/blob/main/serverSrc/jsr107/Invoke.java#L102] in a VoltTable.
+
+
+https://github.com/jsr107/jsr107spec/blob/master/src/main/java/javax/cache/processor/MutableEntry.java
+
 ## Next Steps
 
 * We're looking at an async extension
