@@ -134,7 +134,8 @@ public class Invoke extends AbstractEventTrackingProcedure {
         try {
             results = ourProcessor.process(theEntry, params);
         } catch (EntryProcessorException e) {
-            throw new VoltAbortException(e);
+            this.setAppStatusCode(BAD_THREW_RUNTIME_ERROR);
+            return convertErrorToVoltTable(e);
         }
 
         if (theEntry.exists()) {

@@ -140,7 +140,7 @@ public class Jsr197Sandbox {
             msg("Waiting for " + threads + " threads to finish");
             for (int i = 0; i < threads; i++) {
                 threadArray[i].join();
-                msg("thread [" + i + "] got " + sbArray[i].getTps() + "TPS");
+                msg("thread [" + i + "] got " + sbArray[i].getTps() + " Logical TPS");
             }
             msg("...done");
 
@@ -157,7 +157,7 @@ public class Jsr197Sandbox {
             msg("Waiting for " + threads + " threads to finish");
             for (int i = 0; i < threads; i++) {
                 threadArray[i].join();
-                msg("thread [" + i + "] got " + sbArray[i].getTps() + "TPS");
+                msg("thread [" + i + "] got " + sbArray[i].getTps() + " Logical TPS");
             }
             msg("...done");
 
@@ -174,7 +174,7 @@ public class Jsr197Sandbox {
             msg("Waiting for " + threads + " threads to finish");
             for (int i = 0; i < threads; i++) {
                 threadArray[i].join();
-                msg("thread [" + i + "] got " + sbArray[i].getTps() + "TPS");
+                msg("thread [" + i + "] got " + sbArray[i].getTps() + " TPS");
             }
             msg("...done");
 
