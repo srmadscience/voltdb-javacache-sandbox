@@ -126,13 +126,13 @@ Error Handling:
 
 * Implementors of EntryProcessor should always check the status code to see what happened. An example of this is in the [sandbox code](https://github.com/srmadscience/voltdb-javacache-sandbox/blob/main/demoSrc/org/voltdb/jsr107/sandbox/CacheSandboxThread.java#L250).
 * The two normal results are [AbstractEventTrackingProcedure.OK](https://github.com/srmadscience/voltdb-javacache-sandbox/blob/main/serverSrc/jsr107/AbstractEventTrackingProcedure.java#L73) and [AbstractEventTrackingProcedure.OK_BUT_NOT_FOUND](https://github.com/srmadscience/voltdb-javacache-sandbox/blob/main/serverSrc/jsr107/AbstractEventTrackingProcedure.java#L74), which occurs when you tried to call invoke on a non-existent record.
-* Other [responses](https://github.com/srmadscience/voltdb-javacache-sandbox/blob/main/serverSrc/jsr107/AbstractEventTrackingProcedure.java#L75) are errors, and in each case the Java stack trace will be (returned)[https://github.com/srmadscience/voltdb-javacache-sandbox/blob/main/serverSrc/jsr107/Invoke.java#L102] in a VoltTable.
+* Other [responses](https://github.com/srmadscience/voltdb-javacache-sandbox/blob/main/serverSrc/jsr107/AbstractEventTrackingProcedure.java#L75) are errors, and in each case the Java stack trace will be [returned](https://github.com/srmadscience/voltdb-javacache-sandbox/blob/main/serverSrc/jsr107/Invoke.java#L102) in a VoltTable.
 
-
-https://github.com/jsr107/jsr107spec/blob/master/src/main/java/javax/cache/processor/MutableEntry.java
 
 ## Next Steps
 
+Future work might involve going beyond the canonical JSR107 implementation:
+
 * We're looking at an async extension
-* We're looking at pessimistic locking
+* We're looking at pessimistic locking. We have lots of customers who already do thjis
 

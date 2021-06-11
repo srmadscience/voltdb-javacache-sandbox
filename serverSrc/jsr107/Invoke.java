@@ -49,23 +49,26 @@ public class Invoke extends AbstractEventTrackingProcedure {
             + "(?,?,?);");
     
     public static final SQLStmt deleteKV = new SQLStmt(
-            "DELETE "
-            + "FROM kv "
-            + "WHERE c = ? AND k = ?;");
+            "DELETE FROM kv WHERE c = ? AND k = ?;");
  
-    
+     	// @formatter:on
+
+    // Map containing instantiated EntryProcessors to avoid overhead of doing it each time.
     HashMap<String,EntryProcessor<String, byte[], VoltTable[]>> processorMap = new HashMap<String,EntryProcessor<String, byte[], VoltTable[]>>();
-    
- 	// @formatter:on
 
     @SuppressWarnings("unchecked")
     public VoltTable[] run(String k, String c, String processorClassName, VoltTable paramsAsVoltTable)
             throws VoltAbortException {
 
+        //  We assume things will work...
         this.setAppStatusCode(OK);
+        
+        // We return the key so that invokeAll knows which invocation has returned...
         this.setAppStatusString(k);
 
+        // Note that the varargs for our EntryProcessor show up in a VoltTable
         Object[] params = VoltParameterWrangler.convertFromVoltTable(paramsAsVoltTable);
+        
         VoltTable[] results = null;
         MutableEntry<String, byte[]> theEntry = null;
         boolean previouslyExisted = false;
@@ -148,6 +151,13 @@ public class Invoke extends AbstractEventTrackingProcedure {
 
     }
 
+    /**
+     * Used when we get a Java execution error. Since the error is happening on a server
+     * we need to get it back to the client.
+     * 
+     * @param e
+     * @return the stack trace as a VoltTable....
+     */
     private VoltTable[] convertErrorToVoltTable(Exception e) {
         
         VoltTable t = new VoltTable(new VoltTable.ColumnInfo("ERROR_LINE", VoltType.STRING));
