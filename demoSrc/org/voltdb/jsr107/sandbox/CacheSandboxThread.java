@@ -56,7 +56,7 @@ public class CacheSandboxThread implements Runnable {
     int userCount;
     long starttimeMS;
     long endtimeMS;
-    int eventCount = 0;
+    long eventCount = 0;
     int threadId;
     int durationSeconds;
     byte[] randomLob;

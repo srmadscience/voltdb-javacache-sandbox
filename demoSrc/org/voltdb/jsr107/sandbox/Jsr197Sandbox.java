@@ -49,7 +49,7 @@ public class Jsr197Sandbox {
         msg("Parameters:" + Arrays.toString(args));
 
         if (args.length != 6) {
-            msg("Usage: hostnames usercount threads durationseconds entryProcessorDirName lobsize ");
+            msg("Usage: hostnames usercount threads durationseconds batchsize lobsize ");
             System.exit(1);
         }
 
