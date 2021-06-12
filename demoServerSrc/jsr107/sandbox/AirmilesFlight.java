@@ -23,19 +23,18 @@
 
 package jsr107.sandbox;
 
-import java.util.Date;
-
 import org.voltdb.autojar.IsNeededByAVoltDBProcedure;
+import org.voltdb.types.TimestampType;
 
 @IsNeededByAVoltDBProcedure
 public class AirmilesFlight {
     
     String fromAirport;
     String toAirport;
-    Date when;
-    int points;
+    TimestampType when;
+    long points;
 
-    public AirmilesFlight(String fromAirport, String toAirport, Date when, int points) {
+    public AirmilesFlight(String fromAirport, String toAirport, TimestampType when, long points) {
         super();
         this.fromAirport = fromAirport;
         this.toAirport = toAirport;

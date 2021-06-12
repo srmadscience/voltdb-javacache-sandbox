@@ -28,6 +28,7 @@ import java.util.Random;
 
 import org.voltdb.jsr107.VoltDBCache;
 import org.voltdb.jsr107.VoltDBEntryProcessorResult;
+import org.voltdb.types.TimestampType;
 import org.voltdb.voltutil.stats.SafeHistogramCache;
 
 import com.google.gson.Gson;
@@ -261,6 +262,7 @@ public class CacheSandboxThread implements Runnable {
             shc.reportLatency("invoke_nothing_to_update", startMs, "", 1000);
         } else {
             shc.reportLatency("invoke_response_" + result.get().getAppStatus(), startMs, "", 1000);
+            Jsr197Sandbox.msg(result.get().getResults()[0].toFormattedString());
         }
 
     }
@@ -272,7 +274,7 @@ public class CacheSandboxThread implements Runnable {
      */
     private void addNewFlight(AirmilesRecord ar) {
 
-        ar.addFlight(randomAirport(), randomAirport(), new Date(), r.nextInt(20));
+        ar.addFlight(randomAirport(), randomAirport(), new TimestampType(), r.nextInt(20));
     }
 
   

@@ -1,6 +1,5 @@
 package jsr107;
 
-
 /* This file is part of VoltDB.
  * Copyright (C) 2008-2021 VoltDB Inc.
  *
@@ -53,22 +52,23 @@ public class Invoke extends AbstractEventTrackingProcedure {
  
      	// @formatter:on
 
-    // Map containing instantiated EntryProcessors to avoid overhead of doing it each time.
-    HashMap<String,EntryProcessor<String, byte[], VoltTable[]>> processorMap = new HashMap<String,EntryProcessor<String, byte[], VoltTable[]>>();
+    // Map containing instantiated EntryProcessors to avoid overhead of doing it
+    // each time.
+    HashMap<String, EntryProcessor<String, byte[], VoltTable[]>> processorMap = new HashMap<String, EntryProcessor<String, byte[], VoltTable[]>>();
 
     @SuppressWarnings("unchecked")
     public VoltTable[] run(String k, String c, String processorClassName, VoltTable paramsAsVoltTable)
             throws VoltAbortException {
 
-        //  We assume things will work...
+        // We assume things will work...
         this.setAppStatusCode(OK);
-        
+
         // We return the key so that invokeAll knows which invocation has returned...
         this.setAppStatusString(k);
 
         // Note that the varargs for our EntryProcessor show up in a VoltTable
         Object[] params = VoltParameterWrangler.convertFromVoltTable(paramsAsVoltTable);
-        
+
         VoltTable[] results = null;
         MutableEntry<String, byte[]> theEntry = null;
         boolean previouslyExisted = false;
@@ -85,17 +85,17 @@ public class Invoke extends AbstractEventTrackingProcedure {
                 newClass = Class.forName(processorClassName);
             } catch (ClassNotFoundException e) {
                 this.setAppStatusCode(BAD_CLASSNAME);
-                return  convertErrorToVoltTable(e);
+                return convertErrorToVoltTable(e);
             }
 
             try {
                 cons = newClass.getConstructor();
             } catch (NoSuchMethodException e) {
                 this.setAppStatusCode(BAD_CONSTRUCTOR_NSM);
-                return  convertErrorToVoltTable(e);
+                return convertErrorToVoltTable(e);
             } catch (SecurityException e) {
                 this.setAppStatusCode(BAD_CONSTRUCTOR_SECURITY);
-                return  convertErrorToVoltTable(e);
+                return convertErrorToVoltTable(e);
             }
 
             try {
@@ -105,10 +105,10 @@ public class Invoke extends AbstractEventTrackingProcedure {
                 return convertErrorToVoltTable(e);
             } catch (IllegalAccessException e) {
                 this.setAppStatusCode(BAD_NEWINSTANCE_ACCESS);
-                return  convertErrorToVoltTable(e);
+                return convertErrorToVoltTable(e);
             } catch (IllegalArgumentException e) {
                 this.setAppStatusCode(BAD_NEWINSTANCE_ARGUMENT);
-                return  convertErrorToVoltTable(e);
+                return convertErrorToVoltTable(e);
             } catch (InvocationTargetException e) {
                 this.setAppStatusCode(BAD_NEWINSTANCE_TARGET);
                 return convertErrorToVoltTable(e);
@@ -134,6 +134,9 @@ public class Invoke extends AbstractEventTrackingProcedure {
         try {
             results = ourProcessor.process(theEntry, params);
         } catch (EntryProcessorException e) {
+            this.setAppStatusCode(BAD_THREW_RUNTIME_ENTRYPROCESSOR_ERROR);
+            return convertErrorToVoltTable(e);
+        } catch (Exception e) {
             this.setAppStatusCode(BAD_THREW_RUNTIME_ERROR);
             return convertErrorToVoltTable(e);
         }
@@ -153,28 +156,26 @@ public class Invoke extends AbstractEventTrackingProcedure {
     }
 
     /**
-     * Used when we get a Java execution error. Since the error is happening on a server
-     * we need to get it back to the client.
+     * Used when we get a Java execution error. Since the error is happening on a
+     * server we need to get it back to the client.
      * 
      * @param e
      * @return the stack trace as a VoltTable....
      */
     private VoltTable[] convertErrorToVoltTable(Exception e) {
-        
+
         VoltTable t = new VoltTable(new VoltTable.ColumnInfo("ERROR_LINE", VoltType.STRING));
-        
+
         StackTraceElement[] stack = e.getStackTrace();
-        
-        if (e.getCause() != null) {
-            t.addRow(e.getCause().getClass().getName());
-        }      
-        
-        for (int i=0; i < stack.length; i++) {
-            t.addRow( stack[i].toString());
+
+        t.addRow(e.toString());
+
+        for (int i = 0; i < stack.length; i++) {
+            t.addRow(stack[i].toString());
         }
 
         VoltTable[] tableArray = { t };
- 
+
         return tableArray;
     }
 

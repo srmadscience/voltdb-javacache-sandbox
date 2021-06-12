@@ -54,6 +54,7 @@ import javax.cache.processor.MutableEntry;
 
 import org.voltdb.VoltTable;
 import org.voltdb.autojar.IsNeededByAVoltDBProcedure;
+import org.voltdb.types.TimestampType;
 
 import com.google.gson.Gson;
 
@@ -77,8 +78,8 @@ public class AddNewFlightEntryProcessor implements EntryProcessor<String, byte[]
 
             String fromAirport = (String) params[0];
             String toAirport = (String) params[1];
-            Date flightDate = (Date) params[2];
-            int points = (Integer) params[3];
+            TimestampType flightDate = (TimestampType) params[2];
+            long points = (Long) params[3];
 
             ar.addFlight(fromAirport, toAirport, flightDate, points);
 

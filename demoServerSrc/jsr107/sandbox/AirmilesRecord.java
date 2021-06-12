@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.voltdb.autojar.IsNeededByAVoltDBProcedure;
+import org.voltdb.types.TimestampType;
 
 /**
  * Hypothetical payload for our KV store.
@@ -65,7 +66,7 @@ public class AirmilesRecord {
      * @param flightDate
      * @param points
      */
-    public void addFlight(String fromAirport, String toAirport, Date   flightDate,  int points  ) {
+    public void addFlight(String fromAirport, String toAirport, TimestampType   flightDate,  long points  ) {
         
        
         AirmilesFlight af = new AirmilesFlight(fromAirport, toAirport, flightDate, points);

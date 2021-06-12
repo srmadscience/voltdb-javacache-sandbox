@@ -79,7 +79,8 @@ public abstract class AbstractEventTrackingProcedure extends VoltProcedure {
     public static final byte BAD_NEWINSTANCE_ACCESS = -5;
     public static final byte BAD_NEWINSTANCE_ARGUMENT = -6;
     public static final byte BAD_NEWINSTANCE_TARGET = -7;
-    public static final byte BAD_THREW_RUNTIME_ERROR = -8;
+    public static final byte BAD_THREW_RUNTIME_ENTRYPROCESSOR_ERROR = -8;
+    public static final byte BAD_THREW_RUNTIME_ERROR = -9;
 
     protected void reportEvent(String c, String k, byte[] v, String eventType) {
         voltQueueSQL(getParam, c, "ENABLE_EVENTS");
