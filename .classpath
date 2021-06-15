@@ -25,6 +25,6 @@
 	<classpathentry kind="lib" path="lib/jackson-core-2.10.2.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-databind-2.12.3.jar"/>
 	<classpathentry kind="lib" path="lib/jackson-mapper-asl-1.9.13.jar"/>
-	<classpathentry kind="lib" path="/voltdb-charglt/lib/gson-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

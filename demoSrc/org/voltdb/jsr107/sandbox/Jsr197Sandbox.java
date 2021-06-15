@@ -84,7 +84,7 @@ public class Jsr197Sandbox {
 
             for (int i = 0; i < threads; i++) {
                 //cacheArray[i] = new VoltDBCache(hostlist, 2, "TestCache", "/home/ubuntu/voltdb-javacache-sandbox/jars", "jsr107.sandbox", 9092);
-                cacheArray[i] = new VoltDBCache(hostlist, 2, "TestCache", "/Users/drolfe/Desktop/EclipseWorkspace/voltdb-javacache-sandbox/bin", "jsr107.sandbox", 9092);
+                cacheArray[i] = new VoltDBCache(hostlist, 2, "TestCache", "/Users/drolfe/Desktop/EclipseWorkspace/voltdb-javacache-sandbox/jars/voltdb-javacache-demo-client.jar", "jsr107.sandbox", 9092);
                 sbArray[i] = new CacheSandboxThread(cacheArray[i], userCount, durationSeconds, i, lobSize);
             }
 

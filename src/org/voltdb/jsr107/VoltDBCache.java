@@ -108,6 +108,8 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
     public void loadEntryProcessors() {
         try {
+            
+            AutoJar aj = AutoJar.getInstance();
 
             if (entryProcessorDirName == null || entryProcessorDirName.length() == 0) {
                 throw new NullPointerException("entryProcessorDirName");
@@ -117,7 +119,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
                 throw new NullPointerException("entryProcessorPackageName");
             }
 
-            AutoJar.load(entryProcessorDirName, entryProcessorPackageName, c, null);
+            aj.load(entryProcessorPackageName, c, null);
 
         } catch (Exception e) {
             throw new CacheException("loadEntryProcessors:" + e.getMessage());
