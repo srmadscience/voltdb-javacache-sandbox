@@ -10,7 +10,6 @@ import java.net.URL;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
@@ -31,7 +30,7 @@ import org.voltdb.client.ClientResponse;
  * annotation and loads them into the database. This means you can avoid
  * manually creating JAR files and loading them with sqlcmd.
  * 
- * @author srmadscience / VoltDB
+ * @author VoltDB
  *
  */
 public class AutoJar {
@@ -169,7 +168,7 @@ public class AutoJar {
         }
         ArrayList<Class> classes = new ArrayList<Class>();
         for (File directory : dirs) {
-            System.out.println("Searching " + directory + " for  " + packageName);
+            msg("Searching " + directory + " for  " + packageName);
             classes.addAll(findClasses(directory, packageName));
 
         }
@@ -178,13 +177,14 @@ public class AutoJar {
     }
 
     /**
-     * Derived from https://stackoverflow.com/questions/1429172/how-to-list-the-files-inside-a-jar-file
+     * Derived from
+     * https://stackoverflow.com/questions/1429172/how-to-list-the-files-inside-a-jar-file
      * 
      * @param packageName The base package
      * @return The classes
      * @throws ClassNotFoundException
      * @throws IOException
-      */
+     */
     @SuppressWarnings("rawtypes")
     private Class[] getClassesJAR(String packageName) throws ClassNotFoundException, IOException {
 
@@ -205,7 +205,7 @@ public class AutoJar {
                 }
             }
         } else {
-            msg("Unable to find " + packageName );
+            msg("Unable to find " + packageName);
         }
 
         return classes.toArray(new Class[classes.size()]);
@@ -228,14 +228,12 @@ public class AutoJar {
 
         List<Class> classes = new ArrayList<Class>();
         if (!directory.exists()) {
-            System.out.println("No dir");
-
             return classes;
         }
 
         File[] files = directory.listFiles();
         for (File file : files) {
-            System.out.println("Found " + file.getAbsolutePath());
+            msg("Found " + file.getAbsolutePath());
             if (file.isDirectory()) {
                 assert !file.getName().contains(".");
                 classes.addAll(findClasses(file, packageName + "." + file.getName()));
