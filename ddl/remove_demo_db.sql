@@ -1,0 +1,3 @@
+
+
+DROP PROCEDURE getSchemeMember IF EXISTS;
