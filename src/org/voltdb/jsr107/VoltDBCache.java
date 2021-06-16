@@ -1,7 +1,5 @@
 package org.voltdb.jsr107;
 
-
-
 /* This file is part of VoltDB.
  * Copyright (C) 2008-2021 VoltDB Inc.
  *

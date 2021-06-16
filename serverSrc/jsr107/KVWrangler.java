@@ -1,4 +1,6 @@
-package org.voltdb.jsr107;
+package jsr107;
+
+import org.voltdb.VoltProcedure.VoltAbortException;
 
 /* This file is part of VoltDB.
  * Copyright (C) 2008-2021 VoltDB Inc.
@@ -23,33 +25,31 @@ package org.voltdb.jsr107;
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import javax.cache.Cache;
+/**
+ * Utility class for java cache
+ *
+ */
+public class KVWrangler {
 
-public class KVEntry implements Cache.Entry<String,byte[]>{
+    /**
+     * Working in the assumption that 'varbinaryPayload'
+     *  is actually a Sting we convert it to one.
+     * 
+     * @param varbinaryPayload byte[]
+     * @return A new String version of varbinaryPayload
+     * @throws VoltAbortException
+     */
+    public String varbinaryToString(byte[] varbinaryPayload) throws VoltAbortException {
+        try {
+            if (varbinaryPayload == null) {
+                return null;
+            }
 
-    String key;
-    byte[] value;
-    
+            return new String(varbinaryPayload);
+        } catch (Exception e) {
+            throw new VoltAbortException(e);
+        }
 
-    public KVEntry(String key, byte[] value) {
-        super();
-        this.key = key;
-        this.value = value;
-    }
-
-    @Override
-    public String getKey() {
-        return key;
-    }
-
-    @Override
-    public byte[] getValue() {
-        return value;
-    }
-
-    @Override
-    public <T> T unwrap(Class<T> arg0) {
-        return null;
     }
 
 }

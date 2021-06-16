@@ -37,3 +37,5 @@ DROP table kv_parameters IF EXISTS;
 DROP TABLE kv  IF EXISTS;
 
 DROP STREAM kv_deltas IF EXISTS;
+
+DROP FUNCTION varbinary_to_varchar IF EXISTS;

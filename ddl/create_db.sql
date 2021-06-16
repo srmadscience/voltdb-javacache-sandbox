@@ -6,6 +6,8 @@ load classes ../jars/voltdb-javacache-server.jar;
 
 file -inlinebatch END_OF_BATCH
 
+CREATE FUNCTION varbinary_to_varchar FROM METHOD jsr107.KVWrangler.varbinaryToString;
+
 CREATE table kv_parameters
 (c varchar(30) not null 
 ,param_name varchar(30) not null 
