@@ -25,11 +25,10 @@ package org.voltdb.jsr107;
 
 import javax.cache.Cache;
 
-public class KVEntry implements Cache.Entry<String,byte[]>{
+public class KVEntry implements Cache.Entry<String, byte[]> {
 
     String key;
     byte[] value;
-    
 
     public KVEntry(String key, byte[] value) {
         super();

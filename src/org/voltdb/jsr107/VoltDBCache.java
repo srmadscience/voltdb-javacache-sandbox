@@ -78,12 +78,17 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
     /**
      * 
-     * @param hostnames  comma delimited list of hostnames that make up the VoltDB cluster
-     * @param retryAttempts How many times we try to speak to VoltDB before giving up. Exponential backoff is in use.
-     * @param cacheNamea name of our cache. 
-     * @param entryProcessorDirName If we are using Invoke this is the physical directory the .class files live in.
-     * @param entryProcessorPackageName If we are using Invoke this is the package name our Invokeable classes use
-     * @param kafkaPort - kafka port number on VoltDB, usually 9092
+     * @param hostnames                 comma delimited list of hostnames that make
+     *                                  up the VoltDB cluster
+     * @param retryAttempts             How many times we try to speak to VoltDB
+     *                                  before giving up. Exponential backoff is in
+     *                                  use.
+     * @param cacheNamea                name of our cache.
+     * @param entryProcessorDirName     If we are using Invoke this is the physical
+     *                                  directory the .class files live in.
+     * @param entryProcessorPackageName If we are using Invoke this is the package
+     *                                  name our Invokeable classes use
+     * @param kafkaPort                 - kafka port number on VoltDB, usually 9092
      */
     public VoltDBCache(String hostnames, int retryAttempts, String cacheName, String entryProcessorDirName,
             String entryProcessorPackageName, int kafkaPort) {
@@ -106,7 +111,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
     public void loadEntryProcessors() {
         try {
-            
+
             AutoJar aj = AutoJar.getInstance();
 
             if (entryProcessorDirName == null || entryProcessorDirName.length() == 0) {
@@ -294,12 +299,11 @@ public class VoltDBCache implements Cache<String, byte[]> {
         keySet.add(arg0);
         Object response = invokeAll(keySet, arg1, arg2);
         HashMap<String, VoltDBEntryProcessorResult> response2 = (HashMap<String, VoltDBEntryProcessorResult>) response;
- 
+
         return (T) response2.get(arg0);
 
     }
 
-    
     @SuppressWarnings("unchecked")
     @Override
     public <T> Map<String, EntryProcessorResult<T>> invokeAll(Set<? extends String> arg0,
@@ -369,7 +373,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
     @SuppressWarnings("unchecked")
     @Override
     public Iterator<Entry<String, byte[]>> iterator() {
-        // We're being asked to return the entire database. 
+        // We're being asked to return the entire database.
         // We may throw a CacheException if the contents are too big.
 
         Set<Entry<String, byte[]>> answer = null;

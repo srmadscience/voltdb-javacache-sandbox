@@ -24,6 +24,7 @@
 package org.voltdb.jsr107.sandbox;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Random;
 
 import org.voltdb.jsr107.VoltDBCache;
@@ -43,9 +44,10 @@ import jsr107.sandbox.AirmilesRecord;
  */
 public class CacheSandboxThread implements Runnable {
 
-    public static final int DO_SIMPLE_PUTS = 0;
-    public static final int DO_OPTIMISTIC_PUTS = 1;
-    public static final int DO_INVOCATIONS = 2;
+    public static final int CREATE_USERS = 0;
+    public static final int DO_SIMPLE_PUTS = 1;
+    public static final int DO_OPTIMISTIC_PUTS = 2;
+    public static final int DO_INVOCATIONS = 3;
 
     SafeHistogramCache shc = SafeHistogramCache.getInstance();
     Random r = new Random();
@@ -60,8 +62,10 @@ public class CacheSandboxThread implements Runnable {
     long endtimeMS;
     long eventCount = 0;
     int threadId;
+    int threadCount;
     int durationSeconds;
     byte[] randomLob;
+    int batchSize;
 
     AddNewFlightEntryProcessor addnewFlight = new AddNewFlightEntryProcessor();
 
@@ -75,11 +79,14 @@ public class CacheSandboxThread implements Runnable {
      * @param lobSize         - How large the field AirMilesRecord.randomLob is, if
      *                        we need to make one.
      */
-    public CacheSandboxThread(VoltDBCache voltDBCache, int userCount, int durationSeconds, int threadId, int lobSize) {
+    public CacheSandboxThread(VoltDBCache voltDBCache, int userCount, int durationSeconds, int threadId, int lobSize,
+            int threadCount, int batchSize) {
         this.voltDBCache = voltDBCache;
         this.userCount = userCount;
         this.threadId = threadId;
+        this.threadCount = threadCount;
         this.durationSeconds = durationSeconds;
+        this.batchSize = batchSize;
         randomLob = new byte[lobSize];
         new Random().nextBytes(randomLob);
     }
@@ -91,10 +98,60 @@ public class CacheSandboxThread implements Runnable {
         starttimeMS = System.currentTimeMillis();
         endtimeMS = System.currentTimeMillis() + (1000 * durationSeconds);
 
-        while (System.currentTimeMillis() <= endtimeMS) {
-            // Note that all our calls our sync...
-            doSomething();
+        if (writeType == CREATE_USERS) {
+            addUsers();
+
+        } else {
+            while (System.currentTimeMillis() <= endtimeMS) {
+                // Note that all our calls our sync...
+                doSomething();
+            }
         }
+
+    }
+
+    /**
+     * Add users for this thread
+     */
+    private void addUsers() {
+
+        HashMap<String, byte[]> ourMap = new HashMap<String, byte[]>();
+        int batchCount = 0;
+        long startMs = System.currentTimeMillis();
+        long lastMessageMs = System.currentTimeMillis();
+
+        for (int i = 0; i < userCount; i++) {
+
+            if (i % threadCount == threadId) {
+
+                AirmilesRecord ar = new AirmilesRecord("FlyAllDay", r.nextInt(userCount), 0, randomLob);
+                byte[] arAsByteArray = g.toJson(ar).getBytes();
+                ourMap.put("User_" + i, arAsByteArray);
+
+                if (++batchCount >= batchSize) {
+
+                    startMs = System.currentTimeMillis();
+                    voltDBCache.putAll(ourMap);
+                    shc.reportLatency("putAllBatch", startMs, "time to call put for " + batchSize + " records", 10000);
+
+                    ourMap.clear();
+
+                    batchCount = 0;
+
+                    if (lastMessageMs + 10000 < System.currentTimeMillis()) {
+                        Jsr197Sandbox.msg("[" + threadId + "] on user " + i);
+                        lastMessageMs = System.currentTimeMillis();
+                    }
+
+                }
+
+            }
+
+        }
+
+        startMs = System.currentTimeMillis();
+        voltDBCache.putAll(ourMap);
+        shc.reportLatency("putAllBatch", startMs, "time to call put for " + batchSize + " records", 10000);
 
     }
 
@@ -148,7 +205,6 @@ public class CacheSandboxThread implements Runnable {
 
         } else {
 
-
             if (r.nextInt(100) == 0) {
                 // Delete user
 
@@ -163,7 +219,7 @@ public class CacheSandboxThread implements Runnable {
 
                 // Add another flight.
                 addNewFlight(ar);
-                
+
                 // turn back into bytes
                 byte[] newPayload = g.toJson(ar).getBytes();
 
@@ -183,7 +239,7 @@ public class CacheSandboxThread implements Runnable {
      * @param userId
      */
     private void doOptimisticPuts(String userId) {
-        
+
         // See if user already exists...
         byte[] payload = voltDBCache.get(userId);
 
@@ -212,15 +268,15 @@ public class CacheSandboxThread implements Runnable {
                 // Delete user
 
                 long startMs = System.currentTimeMillis();
-                
+
                 // Delete, but only if unchanged...
                 boolean ok = voltDBCache.remove(userId, g.toJson(ar).getBytes());
-                
+
                 if (ok) {
                     shc.reportLatency("remove_ok", startMs, "", 1000);
                 } else {
                     shc.reportLatency("remove_failed", startMs, "", 1000);
-                }      
+                }
 
             } else {
 
@@ -244,8 +300,8 @@ public class CacheSandboxThread implements Runnable {
     }
 
     /**
-     * Use the cache, but do the work using the 'invocation' interface, which 
-     * makes sure the data hasn't changed since we saw it.
+     * Use the cache, but do the work using the 'invocation' interface, which makes
+     * sure the data hasn't changed since we saw it.
      * 
      * @param userId
      */
@@ -267,9 +323,9 @@ public class CacheSandboxThread implements Runnable {
 
     }
 
-    
     /**
      * Add a new pseudo-random flight to the record.
+     * 
      * @param ar
      */
     private void addNewFlight(AirmilesRecord ar) {
@@ -277,7 +333,6 @@ public class CacheSandboxThread implements Runnable {
         ar.addFlight(randomAirport(), randomAirport(), new TimestampType(), r.nextInt(20));
     }
 
-  
     /**
      * @return A pseudo random user id
      */

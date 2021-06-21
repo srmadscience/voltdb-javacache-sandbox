@@ -53,7 +53,6 @@ import jsr107.test.SwapperEntryProcessor;
 
 class VoltDBCacheTest {
 
-   
     private static final String FIRST_CACHE_NAME = "Test";
     private static final String SECOND_CACHE_NAME = "Test2";
     private static final byte[] OTHER_BYTES = "Other".getBytes();
@@ -891,28 +890,27 @@ class VoltDBCacheTest {
     void testIterator() {
 
         c.setEvents(false);
-        
+
         try {
             createFooEntry();
             createBarEntry();
 
             int entryCount = 0;
-            
+
             Iterator<?> theIterator = c.iterator();
 
             while (theIterator.hasNext()) {
                 Entry<String, byte[]> theEntry = (Entry<String, byte[]>) theIterator.next();
                 entryCount++;
-                
+
                 if (theEntry.getKey() == null) {
                     fail("null key");
                 }
-                
+
                 if (theEntry.getValue() == null) {
                     fail("null value");
                 }
-                
-               
+
                 if (theEntry.getKey().equals(FOO)) {
                     byte[] actualPayload = theEntry.getValue();
 
@@ -930,8 +928,7 @@ class VoltDBCacheTest {
                 } else {
                     fail("iterator - extra payload " + theEntry.getKey());
                 }
-                
-                
+
             }
 
             if (entryCount != 2) {

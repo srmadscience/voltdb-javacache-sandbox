@@ -137,7 +137,5 @@ public class KVEvent extends CacheEntryEvent<String, byte[]> implements Iterable
         builder.append("]");
         return builder.toString();
     }
-    
-   
 
 }

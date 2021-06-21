@@ -78,8 +78,8 @@ public class CacheEventConsumer implements Runnable {
      * @param hostnames - hostname1:9092,hostname2:9092 etc
      * @param string
      */
-    public CacheEventConsumer(String cacheName, String kafkaHostnames, CacheEntryListenerConfiguration<String, byte[]> celc,
-            VoltDBCache cache) {
+    public CacheEventConsumer(String cacheName, String kafkaHostnames,
+            CacheEntryListenerConfiguration<String, byte[]> celc, VoltDBCache cache) {
         super();
         this.cacheName = cacheName;
         this.kafkaHostnames = kafkaHostnames;
@@ -118,7 +118,7 @@ public class CacheEventConsumer implements Runnable {
 
             while (keepGoing) {
 
-                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100)); 
+                ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
                 for (ConsumerRecord<String, String> record : records) {
                     CacheEventConsumer.msg(record.toString());
 

@@ -28,7 +28,7 @@ import org.voltdb.types.TimestampType;
 
 @IsNeededByAVoltDBProcedure
 public class AirmilesFlight {
-    
+
     String fromAirport;
     String toAirport;
     TimestampType when;

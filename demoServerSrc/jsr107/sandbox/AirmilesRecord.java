@@ -34,11 +34,11 @@ import org.voltdb.types.TimestampType;
  */
 @IsNeededByAVoltDBProcedure
 public class AirmilesRecord {
-  
+
     public byte[] randomLob;
-    
+
     public String loyaltySchemeName;
-    
+
     public long loyaltySchemeNumber;
 
     public long loyaltySchemePoints;
@@ -47,10 +47,10 @@ public class AirmilesRecord {
 
     public ArrayList<AirmilesFlight> flightsTaken = new ArrayList<AirmilesFlight>();
 
-    public AirmilesRecord(String loyaltySchemeName, long loyaltySchemeNumber,
-            long loyaltySchemePoints, byte[] randomLob) {
+    public AirmilesRecord(String loyaltySchemeName, long loyaltySchemeNumber, long loyaltySchemePoints,
+            byte[] randomLob) {
         super();
-        
+
         this.loyaltySchemeName = loyaltySchemeName;
         this.loyaltySchemeNumber = loyaltySchemeNumber;
         this.loyaltySchemePoints = loyaltySchemePoints;
@@ -59,24 +59,23 @@ public class AirmilesRecord {
 
     /**
      * 
-     * Add a flight to our record. 
+     * Add a flight to our record.
      * 
      * @param fromAirport
      * @param toAirport
      * @param flightDate
      * @param points
      */
-    public void addFlight(String fromAirport, String toAirport, TimestampType   flightDate,  long points  ) {
-        
-       
+    public void addFlight(String fromAirport, String toAirport, TimestampType flightDate, long points) {
+
         AirmilesFlight af = new AirmilesFlight(fromAirport, toAirport, flightDate, points);
-        
+
         if (flightsTaken.size() > 10) {
 
             flightsTaken.clear();
             loyaltySchemeTier += 1;
         }
-        
+
         loyaltySchemePoints += af.points;
         flightsTaken.add(af);
     }
@@ -93,15 +92,14 @@ public class AirmilesRecord {
         builder.append(", loyaltySchemeTier=");
         builder.append(loyaltySchemeTier);
         builder.append(", flightsTaken=[");
-        
-        for (int i=0; i < flightsTaken.size(); i++) {
+
+        for (int i = 0; i < flightsTaken.size(); i++) {
             builder.append(flightsTaken.get(i));
             builder.append(",");
         }
-        
+
         builder.append("]");
         return builder.toString();
     }
 
- 
 }

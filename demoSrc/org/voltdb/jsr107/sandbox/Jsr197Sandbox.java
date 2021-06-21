@@ -50,8 +50,8 @@ public class Jsr197Sandbox {
 
         msg("Parameters:" + Arrays.toString(args));
 
-        if (args.length != 6) {
-            msg("Usage: hostnames usercount threads durationseconds batchsize lobsize ");
+        if (args.length != 7) {
+            msg("Usage: hostnames usercount threads durationseconds batchsize lobsize eraseusers1_or_0");
             System.exit(1);
         }
 
@@ -73,6 +73,13 @@ public class Jsr197Sandbox {
         // How big the arbitrary binary payload is.
         int lobSize = Integer.parseInt(args[5]);
 
+        // How big the arbitrary binary payload is.
+        boolean eraseUsers = false;
+
+        if (Integer.parseInt(args[6]) > 0) {
+            eraseUsers = true;
+        }
+
         try {
             // Create an arbitrary binary payload
             byte[] randomLob = new byte[lobSize];
@@ -83,51 +90,51 @@ public class Jsr197Sandbox {
             Thread[] threadArray = new Thread[threads];
 
             for (int i = 0; i < threads; i++) {
-                //cacheArray[i] = new VoltDBCache(hostlist, 2, "TestCache", "/home/ubuntu/voltdb-javacache-sandbox/jars", "jsr107.sandbox", 9092);
-                cacheArray[i] = new VoltDBCache(hostlist, 2, "TestCache", "/Users/drolfe/Desktop/EclipseWorkspace/voltdb-javacache-sandbox/jars/voltdb-javacache-demo-client.jar", "jsr107.sandbox", 9092);
-                sbArray[i] = new CacheSandboxThread(cacheArray[i], userCount, durationSeconds, i, lobSize);
+                cacheArray[i] = new VoltDBCache(hostlist, 2, "TestCache",
+                        "/Users/drolfe/Desktop/EclipseWorkspace/voltdb-javacache-sandbox/jars/voltdb-javacache-demo-client.jar",
+                        "jsr107.sandbox", 9092);
+                sbArray[i] = new CacheSandboxThread(cacheArray[i], userCount, durationSeconds, i, lobSize, threads,
+                        batchSize);
             }
 
-            cacheArray[0].loadEntryProcessors(); //TODO
-            cacheArray[0].setEvents(false);
-
-            msg("Step 1: Remove any old records...");
             long startMs = System.currentTimeMillis();
-            cacheArray[0].removeAll();
-            shc.reportLatency("RemoveAll", startMs, "", 1000);
+            
+            if (eraseUsers) {
 
-            msg("...done");
+                cacheArray[0].loadEntryProcessors();
+                cacheArray[0].setEvents(false);
+
+                msg("Step 1: Remove any old records...");
+                cacheArray[0].removeAll();
+                shc.reportLatency("RemoveAll", startMs, "", 1000);
+
+                msg("...done");
+            } else {
+                msg("skipping erase users/load entry processors");
+            }
+
+            Thread.sleep(1000);
 
             msg("Step 2: Creating " + userCount + " new records, each with a binary payload of " + lobSize + " bytes");
 
             long startPutAllMs = System.currentTimeMillis();
             startMs = System.currentTimeMillis();
 
-            HashMap<String, byte[]> ourMap = new HashMap<String, byte[]>();
-
-            for (int i = 0; i < userCount; i++) {
-
-                AirmilesRecord ar = new AirmilesRecord("FlyAllDay", r.nextInt(userCount), 0, randomLob);
-                byte[] arAsByteArray = g.toJson(ar).getBytes();
-                ourMap.put("User_" + i, arAsByteArray);
-
-                if (i > 0 && i % batchSize == 0) {
-
-                    cacheArray[0].putAll(ourMap);
-                    shc.reportLatency("putAllBatch", startMs, "time to call put for " + batchSize + " records", 10000);
-                    startMs = System.currentTimeMillis();
-                    ourMap.clear();
-
-                }
-
+            for (int i = 0; i < threads; i++) {
+                sbArray[i].setWriteType(CacheSandboxThread.CREATE_USERS);
+                threadArray[i] = new Thread(sbArray[i]);
+                threadArray[i].start();
             }
 
-            cacheArray[0].putAll(ourMap);
+            Thread.sleep(1000);
+            msg("Waiting for " + threads + " threads to finish");
+            for (int i = 0; i < threads; i++) {
+                threadArray[i].join();
+            }
+            msg("...done");
+
             shc.reportLatency("putAllTotal", startPutAllMs,
                     "time to call put for " + userCount + " records in batches of " + batchSize, 180000);
-            ourMap = null;
-
-            msg("...done");
 
             msg("Step 3: Starting " + threads + " threads to do simple Get/Put operations. ");
             msg("We'll see how many we can get done in " + durationSeconds + " seconds...");
@@ -138,6 +145,7 @@ public class Jsr197Sandbox {
                 threadArray[i].start();
             }
 
+            Thread.sleep(1000);
             msg("Waiting for " + threads + " threads to finish");
             for (int i = 0; i < threads; i++) {
                 threadArray[i].join();
@@ -155,6 +163,7 @@ public class Jsr197Sandbox {
                 threadArray[i].start();
             }
 
+            Thread.sleep(1000);
             msg("Waiting for " + threads + " threads to finish");
             for (int i = 0; i < threads; i++) {
                 threadArray[i].join();
@@ -172,6 +181,7 @@ public class Jsr197Sandbox {
                 threadArray[i].start();
             }
 
+            Thread.sleep(1000);
             msg("Waiting for " + threads + " threads to finish");
             for (int i = 0; i < threads; i++) {
                 threadArray[i].join();
