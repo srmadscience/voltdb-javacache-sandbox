@@ -318,7 +318,7 @@ public class CacheSandboxThread implements Runnable {
             shc.reportLatency("invoke_nothing_to_update", startMs, "", 1000);
         } else {
             shc.reportLatency("invoke_response_" + result.get().getAppStatus(), startMs, "", 1000);
-            Jsr197Sandbox.msg(result.get().getResults()[0].toFormattedString());
+            Jsr197Sandbox.msg("error code of " + result.get().getAppStatus() + ". " + result.get().getResults()[0].toFormattedString());
         }
 
     }

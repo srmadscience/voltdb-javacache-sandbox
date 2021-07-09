@@ -24,8 +24,6 @@
 package jsr107.sandbox;
 
 import java.util.ArrayList;
-import java.util.Date;
-
 import org.voltdb.autojar.IsNeededByAVoltDBProcedure;
 import org.voltdb.types.TimestampType;
 

@@ -110,8 +110,10 @@ public class Invoke extends AbstractEventTrackingProcedure {
                 this.setAppStatusCode(BAD_NEWINSTANCE_ARGUMENT);
                 return convertErrorToVoltTable(e);
             } catch (InvocationTargetException e) {
-                this.setAppStatusCode(BAD_NEWINSTANCE_TARGET);
-                return convertErrorToVoltTable(e);
+                
+                this.setAppStatusCode(BAD_NEWINSTANCE_CONSTRUCTOR);
+                Throwable t = e.getCause();
+                return convertErrorToVoltTable(t);
             }
 
             processorMap.put(c + System.lineSeparator() + processorClassName, ourProcessor);
@@ -162,7 +164,7 @@ public class Invoke extends AbstractEventTrackingProcedure {
      * @param e
      * @return the stack trace as a VoltTable....
      */
-    private VoltTable[] convertErrorToVoltTable(Exception e) {
+    private VoltTable[] convertErrorToVoltTable(Throwable e) {
 
         VoltTable t = new VoltTable(new VoltTable.ColumnInfo("ERROR_LINE", VoltType.STRING));
 

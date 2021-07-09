@@ -23,18 +23,14 @@
 
 package org.voltdb.jsr107.sandbox;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Random;
 
 import org.voltdb.jsr107.VoltDBCache;
 import org.voltdb.voltutil.stats.SafeHistogramCache;
-
-import com.google.gson.Gson;
-
-import jsr107.sandbox.AirmilesRecord;
 
 public class Jsr197Sandbox {
 
@@ -44,14 +40,13 @@ public class Jsr197Sandbox {
 
     public static void main(String[] args) {
 
-        Gson g = new Gson();
-        Random r = new Random();
+
         SafeHistogramCache shc = SafeHistogramCache.getInstance();
 
         msg("Parameters:" + Arrays.toString(args));
 
-        if (args.length != 7) {
-            msg("Usage: hostnames usercount threads durationseconds batchsize lobsize eraseusers1_or_0");
+        if (args.length != 8) {
+            msg("Usage: hostnames usercount threads durationseconds batchsize lobsize eraseusers1_or_0 voltdb-javacache-demo-client.jar_location");
             System.exit(1);
         }
 
@@ -79,6 +74,24 @@ public class Jsr197Sandbox {
         if (Integer.parseInt(args[6]) > 0) {
             eraseUsers = true;
         }
+        
+        File jarFile = new File(args[7]);
+        
+        if (! jarFile.exists()) {
+            msg("File " + jarFile + " does not exist");
+            System.exit(1);
+        }
+        
+        if (! jarFile.canRead()) {
+            msg("File " + jarFile + " is not readable");
+            System.exit(2);
+        }
+        
+        if (! jarFile.isFile()) {
+            msg("File " + jarFile + " is not a file");
+            System.exit(3);
+        }
+        
 
         try {
             // Create an arbitrary binary payload
@@ -91,7 +104,7 @@ public class Jsr197Sandbox {
 
             for (int i = 0; i < threads; i++) {
                 cacheArray[i] = new VoltDBCache(hostlist, 2, "TestCache",
-                        "/Users/drolfe/Desktop/EclipseWorkspace/voltdb-javacache-sandbox/jars/voltdb-javacache-demo-client.jar",
+                        jarFile.getAbsolutePath(),
                         "jsr107.sandbox", 9092);
                 sbArray[i] = new CacheSandboxThread(cacheArray[i], userCount, durationSeconds, i, lobSize, threads,
                         batchSize);
