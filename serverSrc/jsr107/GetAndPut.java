@@ -46,15 +46,16 @@ public class GetAndPut extends AbstractEventTrackingProcedure {
     public VoltTable[] run(String k, String c, byte[] v) throws VoltAbortException {
 
         voltQueueSQL(getV, c, k);
-
+        queueEventCheck(c);
+        
         final VoltTable[] oldValues = voltExecuteSQL();
 
         voltQueueSQL(upsertKV, c, k, v);
 
         if (oldValues[0].advanceRow()) {
-            reportEvent(c, k, v, UPDATED);
+            reportEvent(c, k, v, UPDATED,oldValues);
         } else {
-            reportEvent(c, k, v, CREATED);
+            reportEvent(c, k, v, CREATED,oldValues);
         }
 
         voltExecuteSQL(true);

@@ -82,12 +82,15 @@ public abstract class AbstractEventTrackingProcedure extends VoltProcedure {
     public static final byte BAD_THREW_RUNTIME_ENTRYPROCESSOR_ERROR = -8;
     public static final byte BAD_THREW_RUNTIME_ERROR = -9;
 
-    protected void reportEvent(String c, String k, byte[] v, String eventType) {
-        voltQueueSQL(getParam, c, "ENABLE_EVENTS");
-        VoltTable[] results = voltExecuteSQL();
+    protected void queueEventCheck(String cacheName) {
+        voltQueueSQL(getParam, cacheName, "ENABLE_EVENTS");
 
+    }
+    
+    protected void reportEvent(String cacheName, String k, byte[] v, String eventType,  VoltTable[] results ) {
+   
         if (results[results.length - 1].advanceRow() && results[results.length - 1].getLong("param_value") == 1) {
-            voltQueueSQL(exportEvent, c, k, v, eventType);
+            voltQueueSQL(exportEvent, cacheName, k, v, eventType);
             voltExecuteSQL();
         }
 

@@ -49,12 +49,13 @@ public class RemoveKeyValuePair extends AbstractEventTrackingProcedure {
     public VoltTable[] run(String k, String c, byte[] v) throws VoltAbortException {
 
         voltQueueSQL(getV, c, k, v);
+        queueEventCheck(c);
 
         final VoltTable[] oldValues = voltExecuteSQL();
 
         if (oldValues[0].advanceRow()) {
 
-            reportEvent(c, k, v, REMOVED);
+            reportEvent(c, k, v, REMOVED,oldValues);
             voltQueueSQL(deleteKV, c, k, v);
             return voltExecuteSQL(true);
 

@@ -46,11 +46,12 @@ public class PutIfAbsent extends AbstractEventTrackingProcedure {
     public VoltTable[] run(String k, String c, byte[] v) throws VoltAbortException {
 
         voltQueueSQL(getV, c, k);
+        queueEventCheck(c);
 
         final VoltTable[] oldValues = voltExecuteSQL();
 
         if (oldValues[0].getRowCount() == 0) {
-            reportEvent(c, k, v, CREATED);
+            reportEvent(c, k, v, CREATED,oldValues);
             voltQueueSQL(upsertKV, c, k, v);
 
         }

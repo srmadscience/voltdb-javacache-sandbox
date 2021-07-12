@@ -1,0 +1,102 @@
+2021-07-09 15:56:11:Parameters:[localhost, 1000000, 4, 300, 100, 1000, 0, voltdb-javacache-demo-client.jar]
+2021-07-09 15:56:11:Logging into VoltDB
+2021-07-09 15:56:11:Connect to localhost...
+2021-07-09 15:56:11:Connected to VoltDB
+2021-07-09 15:56:11:Logging into VoltDB
+2021-07-09 15:56:11:Connect to localhost...
+2021-07-09 15:56:11:Connected to VoltDB
+2021-07-09 15:56:11:Logging into VoltDB
+2021-07-09 15:56:11:Connect to localhost...
+2021-07-09 15:56:11:Connected to VoltDB
+2021-07-09 15:56:11:Logging into VoltDB
+2021-07-09 15:56:11:Connect to localhost...
+2021-07-09 15:56:11:Connected to VoltDB
+2021-07-09 15:56:11:skipping erase users/load entry processors
+2021-07-09 15:56:12:Step 2: Creating 1000000 new records, each with a binary payload of 1000 bytes
+2021-07-09 15:56:13:Waiting for 4 threads to finish
+2021-07-09 15:56:22:[0] on user 126396
+2021-07-09 15:56:22:[2] on user 126398
+2021-07-09 15:56:22:[1] on user 125997
+2021-07-09 15:56:22:[3] on user 127199
+2021-07-09 15:56:32:[0] on user 255196
+2021-07-09 15:56:32:[1] on user 253197
+2021-07-09 15:56:32:[3] on user 255199
+2021-07-09 15:56:32:[2] on user 255598
+2021-07-09 15:56:42:[0] on user 389596
+2021-07-09 15:56:42:[2] on user 389998
+2021-07-09 15:56:42:[1] on user 385997
+2021-07-09 15:56:42:[3] on user 388799
+2021-07-09 15:56:52:[2] on user 526398
+2021-07-09 15:56:52:[0] on user 526396
+2021-07-09 15:56:52:[1] on user 521597
+2021-07-09 15:56:52:[3] on user 525199
+2021-07-09 15:57:02:[2] on user 658398
+2021-07-09 15:57:02:[0] on user 658396
+2021-07-09 15:57:02:[1] on user 651597
+2021-07-09 15:57:02:[3] on user 655599
+2021-07-09 15:57:12:[2] on user 795598
+2021-07-09 15:57:12:[0] on user 793996
+2021-07-09 15:57:12:[1] on user 785197
+2021-07-09 15:57:12:[3] on user 791199
+2021-07-09 15:57:22:[2] on user 927198
+2021-07-09 15:57:22:[1] on user 913997
+2021-07-09 15:57:22:[0] on user 924796
+2021-07-09 15:57:22:[3] on user 920799
+2021-07-09 15:57:28:...done
+2021-07-09 15:57:28:Step 3: Starting 4 threads to do simple Get/Put operations. 
+2021-07-09 15:57:28:We'll see how many we can get done in 300 seconds...
+2021-07-09 15:57:28:Thread [0] on transaction 1
+2021-07-09 15:57:28:Thread [1] on transaction 1
+2021-07-09 15:57:28:Thread [2] on transaction 1
+2021-07-09 15:57:28:Thread [3] on transaction 1
+2021-07-09 15:57:29:Waiting for 4 threads to finish
+2021-07-09 15:58:57:Thread [1] on transaction 100001
+2021-07-09 15:58:58:Thread [2] on transaction 100001
+2021-07-09 15:58:59:Thread [0] on transaction 100001
+2021-07-09 15:58:59:Thread [3] on transaction 100001
+2021-07-09 16:00:27:Thread [1] on transaction 200001
+2021-07-09 16:00:27:Thread [2] on transaction 200001
+2021-07-09 16:00:29:Thread [0] on transaction 200001
+2021-07-09 16:00:31:Thread [3] on transaction 200001
+2021-07-09 16:01:56:Thread [1] on transaction 300001
+2021-07-09 16:01:57:Thread [2] on transaction 300001
+2021-07-09 16:02:00:Thread [0] on transaction 300001
+2021-07-09 16:02:02:Thread [3] on transaction 300001
+2021-07-09 16:02:28:thread [0] got 1111 Logical TPS
+2021-07-09 16:02:28:thread [1] got 1125 Logical TPS
+2021-07-09 16:02:28:thread [2] got 1124 Logical TPS
+2021-07-09 16:02:28:thread [3] got 1102 Logical TPS
+2021-07-09 16:02:28:...done
+2021-07-09 16:02:28:Step 4: Starting 4 threads to do Get/Optimistic Replace operations. 
+2021-07-09 16:02:28:We'll see how many we can get done in 300 seconds...
+2021-07-09 16:02:28:Starting 4 threads 
+2021-07-09 16:02:28:Thread [0] on transaction 1
+2021-07-09 16:02:28:Thread [1] on transaction 1
+2021-07-09 16:02:28:Thread [2] on transaction 1
+2021-07-09 16:02:28:Thread [3] on transaction 1
+2021-07-09 16:02:29:Waiting for 4 threads to finish
+2021-07-09 16:04:00:Thread [0] on transaction 100001
+2021-07-09 16:04:00:Thread [1] on transaction 100001
+2021-07-09 16:04:00:Thread [3] on transaction 100001
+2021-07-09 16:04:00:Thread [2] on transaction 100001
+2021-07-09 16:05:28:Thread [0] on transaction 200001
+2021-07-09 16:05:29:Thread [1] on transaction 200001
+2021-07-09 16:05:30:Thread [3] on transaction 200001
+2021-07-09 16:05:30:Thread [2] on transaction 200001
+2021-07-09 16:07:01:Thread [0] on transaction 300001
+2021-07-09 16:07:01:Thread [1] on transaction 300001
+2021-07-09 16:07:03:Thread [2] on transaction 300001
+2021-07-09 16:07:03:Thread [3] on transaction 300001
+2021-07-09 16:07:28:thread [0] got 1099 Logical TPS
+2021-07-09 16:07:28:thread [1] got 1097 Logical TPS
+2021-07-09 16:07:28:thread [2] got 1092 Logical TPS
+2021-07-09 16:07:28:thread [3] got 1091 Logical TPS
+2021-07-09 16:07:28:...done
+2021-07-09 16:07:28:Step 5: Starting 4 threads to do invoke operations on the server side. 
+2021-07-09 16:07:28:We'll see how many we can get done in 300 seconds...
+2021-07-09 16:07:28:Starting 4 threads 
+2021-07-09 16:07:28:Thread [0] on transaction 1
+2021-07-09 16:07:28:Thread [1] on transaction 1
+2021-07-09 16:07:28:Thread [2] on transaction 1
+2021-07-09 16:07:28:Thread [3] on transaction 1
+2021-07-09 16:07:29:Waiting for 4 threads to finish

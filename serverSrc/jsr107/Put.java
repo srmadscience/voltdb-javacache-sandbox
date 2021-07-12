@@ -46,13 +46,14 @@ public class Put extends AbstractEventTrackingProcedure {
     public VoltTable[] run(String k, String c, byte[] v) throws VoltAbortException {
 
         voltQueueSQL(getV, c, k);
+        queueEventCheck(c);
 
         final VoltTable[] oldValues = voltExecuteSQL();
 
         if (oldValues[0].getRowCount() == 0) {
-            reportEvent(c, k, v, CREATED);
+            reportEvent(c, k, v, CREATED,oldValues);
         } else {
-            reportEvent(c, k, v, UPDATED);
+            reportEvent(c, k, v, UPDATED,oldValues);
         }
 
         voltQueueSQL(upsertKV, c, k, v);

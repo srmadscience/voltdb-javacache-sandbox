@@ -55,6 +55,9 @@ public class CacheEventConsumer implements Runnable {
      */
     String kafkaHostnames;
 
+    /**
+     * Name of cache
+     */
     String cacheName;
 
     /**

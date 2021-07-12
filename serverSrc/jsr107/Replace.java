@@ -45,12 +45,13 @@ public class Replace extends AbstractEventTrackingProcedure {
     public VoltTable[] run(String k, String c, byte[] newV) throws VoltAbortException {
 
         voltQueueSQL(getK, c, k);
+        queueEventCheck(c);
 
         final VoltTable[] oldValues = voltExecuteSQL();
 
         if (oldValues[0].advanceRow()) {
 
-            reportEvent(c, k, newV, UPDATED);
+            reportEvent(c, k, newV, UPDATED,oldValues);
             voltQueueSQL(upsertKV, c, k, newV);
             return voltExecuteSQL(true);
 

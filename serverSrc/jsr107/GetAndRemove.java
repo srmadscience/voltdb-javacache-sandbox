@@ -43,12 +43,13 @@ public class GetAndRemove extends AbstractEventTrackingProcedure {
     public VoltTable[] run(String k, String c) throws VoltAbortException {
 
         voltQueueSQL(getV, c, k);
+        queueEventCheck(c);
 
         final VoltTable[] oldValues = voltExecuteSQL();
 
         if (oldValues[0].advanceRow()) {
             voltQueueSQL(deleteKV, c, k);
-            reportEvent(c, k, oldValues[0].getVarbinary("v"), REMOVED);
+            reportEvent(c, k, oldValues[0].getVarbinary("v"), REMOVED,oldValues);
             return oldValues;
 
         }

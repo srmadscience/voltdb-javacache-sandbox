@@ -1,0 +1,2 @@
+2021-07-09 15:33:12:Parameters:[10000000, 32, 300, 100, 1000, 0, voltdb-javacache-demo-client.jar]
+2021-07-09 15:33:12:Usage: hostnames usercount threads durationseconds batchsize lobsize eraseusers1_or_0 voltdb-javacache-demo-client.jar_location

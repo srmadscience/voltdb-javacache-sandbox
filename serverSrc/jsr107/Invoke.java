@@ -121,6 +121,7 @@ public class Invoke extends AbstractEventTrackingProcedure {
         }
 
         voltQueueSQL(getV, c, k);
+        queueEventCheck(c);
 
         final VoltTable[] oldValues = voltExecuteSQL();
 
@@ -145,10 +146,10 @@ public class Invoke extends AbstractEventTrackingProcedure {
 
         if (theEntry.exists()) {
             voltQueueSQL(upsertKV, c, k, theEntry.getValue());
-            reportEvent(c, k, theEntry.getValue(), UPDATED);
+            reportEvent(c, k, theEntry.getValue(), UPDATED,oldValues);
         } else if (previouslyExisted) {
             voltQueueSQL(deleteKV, c, k);
-            reportEvent(c, k, theEntry.getValue(), REMOVED);
+            reportEvent(c, k, theEntry.getValue(), REMOVED,oldValues);
         }
 
         voltExecuteSQL(true);

@@ -132,7 +132,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
     private void getEventsFromDB() {
         long eventsFlag;
         try {
-            eventsFlag = (long) callVoltDBProc("GetParam", cacheName, "ENABLE_EVENTS");
+            eventsFlag = (long) callVoltDBProcReturnLastRow("GetParam", cacheName, "ENABLE_EVENTS");
             if (eventsFlag == 1) {
                 events = true;
             } else {
@@ -170,7 +170,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
         checkNotNull(arg0);
 
-        Object key = callVoltDBProc("ContainsKey", arg0, cacheName);
+        Object key = callVoltDBProcReturnLastRow("ContainsKey", arg0, cacheName);
 
         if (key != null) {
             return true;
@@ -194,7 +194,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
         checkNotNull(arg0);
 
-        return (byte[]) callVoltDBProc("Get", arg0, cacheName);
+        return (byte[]) callVoltDBProcReturnLastRow("Get", arg0, cacheName);
     }
 
     @Override
@@ -239,7 +239,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
         checkNotNull(arg1);
 
-        return (byte[]) callVoltDBProc("GetAndPut", arg0, cacheName, arg1);
+        return (byte[]) callVoltDBProcRwturnSecondLastRow("GetAndPut", arg0, cacheName, arg1);
     }
 
     @Override
@@ -249,7 +249,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
         checkNotNull(arg0);
 
-        return (byte[]) callVoltDBProc("GetAndRemove", arg0, cacheName);
+        return (byte[]) callVoltDBProcRwturnSecondLastRow("GetAndRemove", arg0, cacheName);
     }
 
     @Override
@@ -261,7 +261,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
         checkNotNull(arg1);
 
-        return (byte[]) callVoltDBProc("GetAndReplace", arg0, cacheName, arg1);
+        return (byte[]) callVoltDBProcRwturnSecondLastRow("GetAndReplace", arg0, cacheName, arg1);
     }
 
     @Override
@@ -379,7 +379,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
         Set<Entry<String, byte[]>> answer = null;
 
         Object[] params = { cacheName };
-        answer = (Set<Entry<String, byte[]>>) callVoltDBProc("Iterator", true, params);
+        answer = (Set<Entry<String, byte[]>>) callVoltDBProcWithAllParams("Iterator", true, 1, params);
         return answer.iterator();
 
     }
@@ -401,7 +401,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
         checkNotNull(arg1);
 
-        callVoltDBProc("Put", arg0, cacheName, arg1);
+        callVoltDBProcReturnLastRow("Put", arg0, cacheName, arg1);
 
     }
 
@@ -451,7 +451,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
         checkNotNull(arg1);
 
-        Object existingKey = callVoltDBProc("PutIfAbsent", arg0, cacheName, arg1);
+        Object existingKey = callVoltDBProcRwturnSecondLastRow("PutIfAbsent", arg0, cacheName, arg1);
 
         if (existingKey == null) {
             return true;
@@ -485,7 +485,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
         checkNotNull(arg0);
 
-        Long upsertedRowCount = (Long) callVoltDBProc("Remove", arg0, cacheName);
+        Long upsertedRowCount = (Long) callVoltDBProcReturnLastRow("Remove", arg0, cacheName);
 
         if (upsertedRowCount != null && upsertedRowCount.longValue() > 0) {
             return true;
@@ -502,7 +502,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
         checkNotNull(arg0);
 
-        Long upsertedRowCount = (Long) callVoltDBProc("RemoveKeyValuePair", arg0, cacheName, arg1);
+        Long upsertedRowCount = (Long) callVoltDBProcReturnLastRow("RemoveKeyValuePair", arg0, cacheName, arg1);
 
         if (upsertedRowCount != null && upsertedRowCount.longValue() > 0) {
             return true;
@@ -514,7 +514,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
     @Override
     public void removeAll() {
 
-        callVoltDBProc("RemoveAll", cacheName);
+        callVoltDBProcReturnLastRow("RemoveAll", cacheName);
 
     }
 
@@ -559,7 +559,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
         checkNotNull(arg1);
 
-        Object upsertedRowCount = callVoltDBProc("Replace", arg0, cacheName, arg1);
+        Object upsertedRowCount = callVoltDBProcReturnLastRow("Replace", arg0, cacheName, arg1);
 
         if (upsertedRowCount != null) {
             return true;
@@ -579,7 +579,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
         checkNotNull(arg2);
 
-        Object upsertedRowCount = callVoltDBProc("ReplaceKeyValuePair", arg0, cacheName, arg1, arg2);
+        Object upsertedRowCount = callVoltDBProcReturnLastRow("ReplaceKeyValuePair", arg0, cacheName, arg1, arg2);
 
         if (upsertedRowCount != null) {
             return true;
@@ -625,12 +625,16 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
     }
 
-    private Object callVoltDBProc(String procedureName, Object... params) {
-        return callVoltDBProc(procedureName, false, params);
+    private Object callVoltDBProcReturnLastRow(String procedureName, Object... params) {
+        return callVoltDBProcWithAllParams(procedureName, false, 1,params);
+    }
+    
+    private Object callVoltDBProcRwturnSecondLastRow(String procedureName, Object... params) {
+        return callVoltDBProcWithAllParams(procedureName, false, 2,params);
     }
 
     @SuppressWarnings("unchecked")
-    private Object callVoltDBProc(String procedureName, boolean wantKVData, Object... params) {
+    private Object callVoltDBProcWithAllParams(String procedureName, boolean wantKVData, int offsetFromLast, Object... params) {
 
         Object answer = null;
         String errorStatus = null;
@@ -645,17 +649,17 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
                 if (cr.getStatus() == ClientResponse.SUCCESS) {
                     VoltTable[] resultsTables = cr.getResults();
-                    if (resultsTables.length > 0 && resultsTables[resultsTables.length - 1].getRowCount() > 0) {
+                    if (resultsTables.length > 0 && resultsTables[resultsTables.length - offsetFromLast].getRowCount() > 0) {
 
                         if (wantKVData) {
 
                             answer = new HashSet<Entry<String, byte[]>>(
-                                    resultsTables[resultsTables.length - 1].getRowCount());
+                                    resultsTables[resultsTables.length - offsetFromLast].getRowCount());
 
-                            while (resultsTables[resultsTables.length - 1].advanceRow()) {
+                            while (resultsTables[resultsTables.length - offsetFromLast].advanceRow()) {
 
-                                String k = resultsTables[resultsTables.length - 1].getString("k");
-                                byte[] v = resultsTables[resultsTables.length - 1].getVarbinary("v");
+                                String k = resultsTables[resultsTables.length - offsetFromLast].getString("k");
+                                byte[] v = resultsTables[resultsTables.length - offsetFromLast].getVarbinary("v");
 
                                 KVEntry newEntry = new KVEntry(k, v);
 
@@ -663,8 +667,8 @@ public class VoltDBCache implements Cache<String, byte[]> {
                             }
 
                         } else {
-                            resultsTables[resultsTables.length - 1].advanceRow();
-                            answer = resultsTables[resultsTables.length - 1].get(0);
+                            resultsTables[resultsTables.length - offsetFromLast].advanceRow();
+                            answer = resultsTables[resultsTables.length - offsetFromLast].get(0);
                         }
                     }
 
@@ -828,9 +832,9 @@ public class VoltDBCache implements Cache<String, byte[]> {
     public void setEvents(boolean events) {
         this.events = events;
         if (events) {
-            callVoltDBProc("kv_parameters.UPSERT", cacheName, "ENABLE_EVENTS", 1);
+            callVoltDBProcReturnLastRow("kv_parameters.UPSERT", cacheName, "ENABLE_EVENTS", 1);
         } else {
-            callVoltDBProc("kv_parameters.UPSERT", cacheName, "ENABLE_EVENTS", 0);
+            callVoltDBProcReturnLastRow("kv_parameters.UPSERT", cacheName, "ENABLE_EVENTS", 0);
         }
 
     }

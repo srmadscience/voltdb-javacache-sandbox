@@ -46,12 +46,13 @@ public class Remove extends AbstractEventTrackingProcedure {
 
     public VoltTable[] run(String k, String c) {
         voltQueueSQL(getV, c, k);
+        queueEventCheck(c);
 
         final VoltTable[] oldValues = voltExecuteSQL();
 
         if (oldValues[0].advanceRow()) {
 
-            reportEvent(c, k, oldValues[0].getVarbinary("v"), REMOVED);
+            reportEvent(c, k, oldValues[0].getVarbinary("v"), REMOVED,oldValues);
             voltQueueSQL(deleteKV, c, k);
             return voltExecuteSQL(true);
 

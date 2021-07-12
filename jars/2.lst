@@ -1,0 +1,289 @@
+2021-07-09 15:39:01:Parameters:[localhost, 1000000, 2, 300, 100, 1000, 0, voltdb-javacache-demo-client.jar]
+2021-07-09 15:39:01:Logging into VoltDB
+2021-07-09 15:39:01:Connect to localhost...
+2021-07-09 15:39:01:Connected to VoltDB
+2021-07-09 15:39:01:Logging into VoltDB
+2021-07-09 15:39:01:Connect to localhost...
+2021-07-09 15:39:01:Connected to VoltDB
+2021-07-09 15:39:01:skipping erase users/load entry processors
+2021-07-09 15:39:02:Step 2: Creating 1000000 new records, each with a binary payload of 1000 bytes
+2021-07-09 15:39:03:Waiting for 2 threads to finish
+2021-07-09 15:39:12:[1] on user 64799
+2021-07-09 15:39:12:[0] on user 64598
+2021-07-09 15:39:22:[1] on user 147199
+2021-07-09 15:39:22:[0] on user 146398
+2021-07-09 15:39:32:[0] on user 231998
+2021-07-09 15:39:32:[1] on user 233599
+2021-07-09 15:39:42:[0] on user 315998
+2021-07-09 15:39:42:[1] on user 318199
+2021-07-09 15:39:52:[0] on user 398998
+2021-07-09 15:39:52:[1] on user 401399
+2021-07-09 15:40:02:[0] on user 475598
+2021-07-09 15:40:02:[1] on user 478399
+2021-07-09 15:40:12:[1] on user 553599
+2021-07-09 15:40:12:[0] on user 550198
+2021-07-09 15:40:22:[0] on user 633198
+2021-07-09 15:40:22:[1] on user 637399
+2021-07-09 15:40:32:[0] on user 716998
+2021-07-09 15:40:32:[1] on user 721799
+2021-07-09 15:40:42:[0] on user 780598
+2021-07-09 15:40:42:[1] on user 785799
+2021-07-09 15:40:52:[0] on user 861398
+2021-07-09 15:40:52:[1] on user 867199
+2021-07-09 15:41:02:[0] on user 932798
+2021-07-09 15:41:02:[1] on user 939199
+2021-07-09 15:41:10:...done
+2021-07-09 15:41:10:Step 3: Starting 2 threads to do simple Get/Put operations. 
+2021-07-09 15:41:10:We'll see how many we can get done in 300 seconds...
+2021-07-09 15:41:10:Thread [0] on transaction 1
+2021-07-09 15:41:10:Thread [1] on transaction 1
+2021-07-09 15:41:11:Waiting for 2 threads to finish
+2021-07-09 15:42:18:Thread [1] on transaction 100001
+2021-07-09 15:42:18:Thread [0] on transaction 100001
+2021-07-09 15:43:24:Thread [1] on transaction 200001
+2021-07-09 15:43:24:Thread [0] on transaction 200001
+2021-07-09 15:44:32:Thread [1] on transaction 300001
+2021-07-09 15:44:32:Thread [0] on transaction 300001
+2021-07-09 15:45:38:Thread [1] on transaction 400001
+2021-07-09 15:45:38:Thread [0] on transaction 400001
+2021-07-09 15:46:10:thread [0] got 1474 Logical TPS
+2021-07-09 15:46:10:thread [1] got 1475 Logical TPS
+2021-07-09 15:46:10:...done
+2021-07-09 15:46:10:Step 4: Starting 2 threads to do Get/Optimistic Replace operations. 
+2021-07-09 15:46:10:We'll see how many we can get done in 300 seconds...
+2021-07-09 15:46:10:Starting 2 threads 
+2021-07-09 15:46:10:Thread [0] on transaction 1
+2021-07-09 15:46:10:Thread [1] on transaction 1
+2021-07-09 15:46:11:Waiting for 2 threads to finish
+2021-07-09 15:47:21:Thread [1] on transaction 100001
+2021-07-09 15:47:21:Thread [0] on transaction 100001
+2021-07-09 15:48:30:Thread [0] on transaction 200001
+2021-07-09 15:48:30:Thread [1] on transaction 200001
+2021-07-09 15:49:35:Thread [1] on transaction 300001
+2021-07-09 15:49:35:Thread [0] on transaction 300001
+2021-07-09 15:50:40:Thread [1] on transaction 400001
+2021-07-09 15:50:40:Thread [0] on transaction 400001
+2021-07-09 15:51:10:thread [0] got 1475 Logical TPS
+2021-07-09 15:51:10:thread [1] got 1475 Logical TPS
+2021-07-09 15:51:10:...done
+2021-07-09 15:51:10:Step 5: Starting 2 threads to do invoke operations on the server side. 
+2021-07-09 15:51:10:We'll see how many we can get done in 300 seconds...
+2021-07-09 15:51:10:Starting 2 threads 
+2021-07-09 15:51:10:Thread [0] on transaction 1
+2021-07-09 15:51:10:Thread [1] on transaction 1
+2021-07-09 15:51:11:Waiting for 2 threads to finish
+2021-07-09 15:52:11:Thread [0] on transaction 100001
+2021-07-09 15:52:11:Thread [1] on transaction 100001
+2021-07-09 15:53:14:Thread [0] on transaction 200001
+2021-07-09 15:53:14:Thread [1] on transaction 200001
+2021-07-09 15:54:16:Thread [0] on transaction 300001
+2021-07-09 15:54:16:Thread [1] on transaction 300001
+2021-07-09 15:55:19:Thread [0] on transaction 400001
+2021-07-09 15:55:20:Thread [1] on transaction 400001
+2021-07-09 15:56:10:thread [0] got 1611 TPS
+2021-07-09 15:56:10:thread [1] got 1608 TPS
+2021-07-09 15:56:10:...done
+2021-07-09 15:56:10:{putAllBatch=putAllBatch 
+ Reports=           10002 Average=               2, Total=          16,256, 50%=               2, 95%=              11, 99%=              20, 99.5%=              24, 99.95%=              26, Max=              35
+0	28.0	time to call put for 100 records
+1	5996.0	time to call put for 100 records
+2	3043.0	time to call put for 100 records
+3	574.0	time to call put for 100 records
+4	157.0	time to call put for 100 records
+5	61.0	time to call put for 100 records
+6	29.0	time to call put for 100 records
+7	19.0	time to call put for 100 records
+8	7.0	time to call put for 100 records
+9	14.0	time to call put for 100 records
+10	10.0	time to call put for 100 records
+11	19.0	time to call put for 100 records
+12	10.0	time to call put for 100 records
+13	5.0	time to call put for 100 records
+14	7.0	time to call put for 100 records
+15	8.0	time to call put for 100 records
+16	1.0	time to call put for 100 records
+17	4.0	time to call put for 100 records
+19	2.0	time to call put for 100 records
+20	1.0	time to call put for 100 records
+21	1.0	time to call put for 100 records
+22	1.0	time to call put for 100 records
+23	1.0	time to call put for 100 records
+24	1.0	time to call put for 100 records
+25	1.0	time to call put for 100 records
+26	1.0	time to call put for 100 records
+35	1.0	time to call put for 100 records
+, putNew=putNew 
+ Reports=            2888 Average=               0, Total=             371, 50%=               0, 95%=               0, 99%=               0, 99.5%=               0, 99.95%=               0, Max=              13
+0	2562.0	time to call put for new record
+1	321.0	time to call put for new record
+4	1.0	time to call put for new record
+10	1.0	time to call put for new record
+11	1.0	time to call put for new record
+12	1.0	time to call put for new record
+13	1.0	time to call put for new record
+, replace_ok=replace_ok 
+ Reports=          870065 Average=               0, Total=         112,151, 50%=               0, 95%=               0, 99%=               0, 99.5%=               0, 99.95%=               0, Max=              57
+0	761620.0	time to call replace_ok
+1	107818.0	time to call replace_ok
+2	220.0	time to call replace_ok
+3	72.0	time to call replace_ok
+4	50.0	time to call replace_ok
+5	27.0	time to call replace_ok
+6	17.0	time to call replace_ok
+7	28.0	time to call replace_ok
+8	21.0	time to call replace_ok
+9	43.0	time to call replace_ok
+10	40.0	time to call replace_ok
+11	11.0	time to call replace_ok
+12	18.0	time to call replace_ok
+13	5.0	time to call replace_ok
+14	11.0	time to call replace_ok
+15	5.0	time to call replace_ok
+16	7.0	time to call replace_ok
+17	8.0	time to call replace_ok
+18	4.0	time to call replace_ok
+19	6.0	time to call replace_ok
+20	2.0	time to call replace_ok
+21	3.0	time to call replace_ok
+22	2.0	time to call replace_ok
+23	1.0	time to call replace_ok
+24	2.0	time to call replace_ok
+25	1.0	time to call replace_ok
+26	2.0	time to call replace_ok
+27	4.0	time to call replace_ok
+29	3.0	time to call replace_ok
+30	2.0	time to call replace_ok
+31	1.0	time to call replace_ok
+32	3.0	time to call replace_ok
+37	2.0	time to call replace_ok
+38	1.0	time to call replace_ok
+39	1.0	time to call replace_ok
+43	1.0	time to call replace_ok
+45	1.0	time to call replace_ok
+51	1.0	time to call replace_ok
+57	1.0	time to call replace_ok
+, putIfAbsent_ok=putIfAbsent_ok 
+ Reports=            6329 Average=               0, Total=             780, 50%=               0, 95%=               0, 99%=               0, 99.5%=               0, 99.95%=               0, Max=              33
+0	5629.0	time to call putIfAbsent_ok
+1	695.0	time to call putIfAbsent_ok
+2	2.0	time to call putIfAbsent_ok
+19	1.0	time to call putIfAbsent_ok
+29	1.0	time to call putIfAbsent_ok
+33	1.0	time to call putIfAbsent_ok
+, remove_ok=remove_ok 
+ Reports=            8965 Average=               0, Total=           3,227, 50%=               0, 95%=               0, 99%=               0, 99.5%=               0, 99.95%=               0, Max=              28
+0	5815.0	
+1	3141.0	
+2	3.0	
+3	1.0	
+4	1.0	
+5	1.0	
+15	1.0	
+25	1.0	
+28	1.0	
+, putExists=putExists 
+ Reports=          873541 Average=               0, Total=         114,821, 50%=               0, 95%=               0, 99%=               0, 99.5%=               0, 99.95%=               0, Max=              60
+0	762868.0	time to call put for existing record
+1	109637.0	time to call put for existing record
+2	453.0	time to call put for existing record
+3	155.0	time to call put for existing record
+4	86.0	time to call put for existing record
+5	66.0	time to call put for existing record
+6	28.0	time to call put for existing record
+7	41.0	time to call put for existing record
+8	27.0	time to call put for existing record
+9	49.0	time to call put for existing record
+10	31.0	time to call put for existing record
+11	14.0	time to call put for existing record
+12	20.0	time to call put for existing record
+13	15.0	time to call put for existing record
+14	9.0	time to call put for existing record
+15	5.0	time to call put for existing record
+16	5.0	time to call put for existing record
+17	5.0	time to call put for existing record
+18	3.0	time to call put for existing record
+19	2.0	time to call put for existing record
+20	4.0	time to call put for existing record
+21	1.0	time to call put for existing record
+23	2.0	time to call put for existing record
+25	1.0	time to call put for existing record
+26	3.0	time to call put for existing record
+27	1.0	time to call put for existing record
+29	2.0	time to call put for existing record
+32	1.0	time to call put for existing record
+33	1.0	time to call put for existing record
+34	1.0	time to call put for existing record
+35	1.0	time to call put for existing record
+40	1.0	time to call put for existing record
+50	1.0	time to call put for existing record
+51	1.0	time to call put for existing record
+60	1.0	time to call put for existing record
+, invoke_ok=invoke_ok 
+ Reports=          957871 Average=               1, Total=         598,418, 50%=               0, 95%=               1, 99%=               1, 99.5%=               1, 99.95%=               1, Max=              75
+0	372074.0	
+1	578556.0	
+2	6147.0	
+3	495.0	
+4	127.0	
+5	66.0	
+6	54.0	
+7	40.0	
+8	37.0	
+9	37.0	
+10	37.0	
+11	30.0	
+12	33.0	
+13	11.0	
+14	13.0	
+15	15.0	
+16	13.0	
+17	12.0	
+18	13.0	
+19	9.0	
+20	7.0	
+21	6.0	
+22	7.0	
+23	3.0	
+24	1.0	
+25	3.0	
+26	2.0	
+27	3.0	
+28	1.0	
+29	2.0	
+30	1.0	
+31	3.0	
+32	4.0	
+33	2.0	
+44	1.0	
+45	1.0	
+56	1.0	
+64	1.0	
+68	1.0	
+73	1.0	
+75	1.0	
+, invoke_nothing_to_update=invoke_nothing_to_update 
+ Reports=            8131 Average=               0, Total=           1,118, 50%=               0, 95%=               0, 99%=               0, 99.5%=               0, 99.95%=               0, Max=              14
+0	7038.0	
+1	1087.0	
+2	4.0	
+9	1.0	
+14	1.0	
+, remove=remove 
+ Reports=            8651 Average=               0, Total=           1,045, 50%=               0, 95%=               0, 99%=               0, 99.5%=               0, 99.95%=               0, Max=              15
+0	7642.0	time to call remove
+1	1003.0	time to call remove
+2	2.0	time to call remove
+5	1.0	time to call remove
+8	1.0	time to call remove
+10	1.0	time to call remove
+15	1.0	time to call remove
+, putAllTotal=putAllTotal 
+ Reports=               1 Average=         128,115, Total=         128,115, 50%=          128115, 95%=          128115, 99%=          128115, 99.5%=          128115, 99.95%=          128115, Max=          128115
+128115	1.0	time to call put for 1000000 records in batches of 100
+}
+{}
+{}
+2021-07-09 15:56:10:Time to create 1000000 records in batches of 100: 1.0
+2021-07-09 15:56:10:Simple Get/Put operations in 300 seconds: 873541.0
+2021-07-09 15:56:10:Get/Optimistic Replace in 300 seconds: 870065.0
+2021-07-09 15:56:10:Invocation operations in 300 seconds: 957871.0

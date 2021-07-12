@@ -76,18 +76,18 @@ class VoltDBCacheCDCTest {
         Factory<MyCacheEntryListener<String, byte[]>> theListenerFactory = new MyCacheEntryListenerFactory();
         Factory<MyCacheEntryEventFilter<String, byte[]>> theEventFactory = new MyCacheEntryFilterFactory(FRED_TEST_CDC);
 
-        MutableCacheEntryListenerConfiguration<String, byte[]> fred = new MutableCacheEntryListenerConfiguration<String, byte[]>(
+        MutableCacheEntryListenerConfiguration<String, byte[]> cacheEntryListenerConfig = new MutableCacheEntryListenerConfiguration<String, byte[]>(
                 theListenerFactory, theEventFactory, false, true);
 
-        c.registerCacheEntryListener(fred);
+        c.registerCacheEntryListener(cacheEntryListenerConfig);
 
-        c.deregisterCacheEntryListener(fred);
+        c.deregisterCacheEntryListener(cacheEntryListenerConfig);
 
         c.setEvents(true);
 
-        c.registerCacheEntryListener(fred);
+        c.registerCacheEntryListener(cacheEntryListenerConfig);
 
-        MyCacheEntryListener<String, byte[]> l = ((MyCacheEntryListenerFactory) theListenerFactory).getListener();
+        MyCacheEntryListener<String, byte[]> cacheEntryListener = ((MyCacheEntryListenerFactory) theListenerFactory).getListener();
 
         try {
             Thread.sleep(30000);
@@ -95,9 +95,9 @@ class VoltDBCacheCDCTest {
             fail(e);
         }
 
-        l.resetCounters();
+        cacheEntryListener.resetCounters();
 
-        if (l.getCreated() != 0 || l.getUpdated() != 0 || l.getDeleted() != 0) {
+        if (cacheEntryListener.getCreated() != 0 || cacheEntryListener.getUpdated() != 0 || cacheEntryListener.getDeleted() != 0) {
             fail("early records");
         }
 
@@ -117,11 +117,12 @@ class VoltDBCacheCDCTest {
             c.remove(FRED_TEST_CDC + i);
         }
 
-        long timeoutMS = System.currentTimeMillis() + 20000;
+        long timeoutMS = System.currentTimeMillis() + 60000;
 
         while (System.currentTimeMillis() < timeoutMS) {
 
-            if (l.getCreated() == insertCount && l.getUpdated() == updateCount && l.getDeleted() == deleteCount) {
+            if (cacheEntryListener.getCreated() == insertCount && cacheEntryListener.getUpdated() == updateCount && cacheEntryListener.getDeleted() == deleteCount) {
+                System.out.println("Received all records...");
                 break;
             }
 
@@ -133,8 +134,10 @@ class VoltDBCacheCDCTest {
 
         }
 
-        System.out.println(l);
+        System.out.println(cacheEntryListener);
 
+        System.out.println("time remaining = " + (timeoutMS - System.currentTimeMillis()  ));
+        
         if (System.currentTimeMillis() >= timeoutMS) {
             fail("timeout");
         }
@@ -145,7 +148,7 @@ class VoltDBCacheCDCTest {
             fail(e);
         }
 
-        if (l.getCreated() != insertCount || l.getUpdated() != updateCount || l.getDeleted() != deleteCount) {
+        if (cacheEntryListener.getCreated() != insertCount || cacheEntryListener.getUpdated() != updateCount || cacheEntryListener.getDeleted() != deleteCount) {
             fail("late records");
         }
 
