@@ -58,6 +58,8 @@ class VoltDBCacheParameterWranglerTest {
 
         c = new VoltDBCache("localhost", 10, "FRED", "", "", 9092);
         c.removeAll();
+        c.setEvents(false);
+
 
     }
 

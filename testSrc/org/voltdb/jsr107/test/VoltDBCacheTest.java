@@ -83,10 +83,12 @@ class VoltDBCacheTest {
         c = new VoltDBCache("localhost", 10, FIRST_CACHE_NAME,
                 "/Users/drolfe/Desktop/EclipseWorkspace/voltdb-javacache/bin", "jsr107.test", 9092);
         c.removeAll();
+        c.setEvents(false);
 
         c2 = new VoltDBCache("localhost", 10, SECOND_CACHE_NAME,
                 "/Users/drolfe/Desktop/EclipseWorkspace/voltdb-javacache/bin", "jsr107.test", 9092);
         c2.removeAll();
+        c2.setEvents(false);
 
     }
 
@@ -878,10 +880,21 @@ class VoltDBCacheTest {
 
     @Test
     void testGetEvents() {
+        
+       c.setEvents(true);
+        
         boolean foo = c.getEvents();
 
         if (!foo) {
             fail("getEvents");
+        }
+
+       c.setEvents(false);
+        
+        boolean foo2 = c.getEvents();
+
+        if (foo2) {
+            fail("getEvents2");
         }
 
     }

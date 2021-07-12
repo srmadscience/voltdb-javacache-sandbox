@@ -143,7 +143,7 @@ class VoltDBCacheCDCTest {
         }
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             fail(e);
         }
@@ -151,6 +151,8 @@ class VoltDBCacheCDCTest {
         if (cacheEntryListener.getCreated() != insertCount || cacheEntryListener.getUpdated() != updateCount || cacheEntryListener.getDeleted() != deleteCount) {
             fail("late records");
         }
+        
+  
 
     }
 

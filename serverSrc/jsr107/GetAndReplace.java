@@ -56,10 +56,10 @@ public class GetAndReplace extends AbstractEventTrackingProcedure {
 
             reportEvent(c, k, v, UPDATED,oldValues);
 
-            voltExecuteSQL(true);
-
         }
 
+        voltExecuteSQL(true);
+        
         return oldValues;
     }
 }

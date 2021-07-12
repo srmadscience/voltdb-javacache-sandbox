@@ -31,10 +31,10 @@ public class GetAndRemove extends AbstractEventTrackingProcedure {
     // @formatter:off
 
 	public static final SQLStmt getV = new SQLStmt(
-			"SELECT v FROM kv WHERE c= ? AND k = ?;");
+			"SELECT v FROM kv WHERE c = ? AND k = ?;");
 
     public static final SQLStmt deleteKV = new SQLStmt(
-            "DELETE FROM kv WHERE c= ? AND k = ?;");
+            "DELETE FROM kv WHERE c = ? AND k = ?;");
     
  
 
@@ -48,8 +48,10 @@ public class GetAndRemove extends AbstractEventTrackingProcedure {
         final VoltTable[] oldValues = voltExecuteSQL();
 
         if (oldValues[0].advanceRow()) {
+            
             voltQueueSQL(deleteKV, c, k);
             reportEvent(c, k, oldValues[0].getVarbinary("v"), REMOVED,oldValues);
+            voltExecuteSQL(true);
             return oldValues;
 
         }

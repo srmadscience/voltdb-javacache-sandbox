@@ -123,8 +123,7 @@ public class CacheEventConsumer implements Runnable {
 
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
                 for (ConsumerRecord<String, String> record : records) {
-                    CacheEventConsumer.msg(record.toString());
-
+          
                     KVEvent event = KVEvent.createEventFromKafka(cache, record.value().toString());
 
                     if (event.getCacheName().equals(cacheName)) {
