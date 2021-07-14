@@ -110,7 +110,7 @@ public class CacheEventConsumer implements Runnable {
 
             Properties props = new Properties();
             props.put("bootstrap.servers", kafkaHostnames);
-            props.put("group.id", cacheName);
+            props.put("group.id", cacheName + System.currentTimeMillis());
             props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
             props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
             props.put("auto.commit.interval.ms", "100");

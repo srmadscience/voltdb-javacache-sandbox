@@ -47,6 +47,8 @@ public class KVEvent extends CacheEntryEvent<String, byte[]> implements Iterable
      */
     private static final long serialVersionUID = 1L;
 
+    private static String NULL_KAFKA_FIELD = "\\N";
+
     String cacheName;
     String key;
     byte[] value;
@@ -104,13 +106,24 @@ public class KVEvent extends CacheEntryEvent<String, byte[]> implements Iterable
         EventType eventType = null;
         String cacheName;
         String key;
-        byte[] value;
+        byte[] value = null;
 
         String[] recordParts = record.split(",");
 
         cacheName = recordParts[0];
         key = recordParts[1];
-        value = Hex.decodeHex(recordParts[2]);
+
+        try {
+            if (recordParts[2].equals(NULL_KAFKA_FIELD)) {
+                value = new byte[0];
+            } else {
+                value = Hex.decodeHex(recordParts[2]);
+            }
+
+        } catch (DecoderException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         if (recordParts[3].equals(AbstractEventTrackingProcedure.CREATED)) {
             eventType = EventType.CREATED;
@@ -133,7 +146,17 @@ public class KVEvent extends CacheEntryEvent<String, byte[]> implements Iterable
         builder.append(", key=");
         builder.append(key);
         builder.append(", value=");
-        builder.append(Arrays.toString(value));
+
+        if (value != null && value.length % 2 == 0 // Even number of characters
+                && value[0] == '{' // Starts with JSON open bracket
+                && value[value.length - 1] == '}') // Ends with JSON close bracket
+        {
+            // Racing certainty that this is a JSON payload...
+            builder.append(new String(value));
+        } else {
+            builder.append(Arrays.toString(value));
+        }
+
         builder.append("]");
         return builder.toString();
     }

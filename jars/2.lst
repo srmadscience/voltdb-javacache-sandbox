@@ -1,0 +1,67 @@
+2021-07-12 14:18:07:Parameters:[localhost, 1000000, 2, 300, 100, 1000, 0, voltdb-javacache-demo-client.jar]
+2021-07-12 14:18:07:Logging into VoltDB
+2021-07-12 14:18:07:Connect to localhost...
+2021-07-12 14:18:07:Connected to VoltDB
+2021-07-12 14:18:07:Logging into VoltDB
+2021-07-12 14:18:07:Connect to localhost...
+2021-07-12 14:18:07:Connected to VoltDB
+2021-07-12 14:18:07:skipping erase users/load entry processors
+2021-07-12 14:18:08:Step 2: Creating 1000000 new records, each with a binary payload of 1000 bytes
+2021-07-12 14:18:09:Waiting for 2 threads to finish
+2021-07-12 14:18:18:[0] on user 71198
+2021-07-12 14:18:18:[1] on user 71599
+2021-07-12 14:18:28:[0] on user 147598
+2021-07-12 14:18:28:[1] on user 147999
+2021-07-12 14:18:38:[0] on user 217798
+2021-07-12 14:18:38:[1] on user 219599
+2021-07-12 14:18:48:[1] on user 294799
+2021-07-12 14:18:48:[0] on user 293198
+2021-07-12 14:18:58:[0] on user 356998
+2021-07-12 14:18:58:[1] on user 358399
+2021-07-12 14:19:08:[1] on user 428399
+2021-07-12 14:19:08:[0] on user 427398
+2021-07-12 14:19:18:[0] on user 481398
+2021-07-12 14:19:18:[1] on user 482399
+2021-07-12 14:19:28:[0] on user 551398
+2021-07-12 14:19:28:[1] on user 552399
+2021-07-12 14:19:38:[0] on user 607998
+2021-07-12 14:19:38:[1] on user 608599
+2021-07-12 14:19:48:[1] on user 673999
+2021-07-12 14:19:48:[0] on user 673398
+2021-07-12 14:19:58:[0] on user 754798
+2021-07-12 14:19:58:[1] on user 755199
+2021-07-12 14:20:08:[0] on user 823398
+2021-07-12 14:20:08:[1] on user 823599
+2021-07-12 14:20:18:[1] on user 888799
+2021-07-12 14:20:18:[0] on user 888598
+2021-07-12 14:20:28:[0] on user 965798
+2021-07-12 14:20:28:[1] on user 965999
+2021-07-12 14:20:33:...done
+2021-07-12 14:20:33:Step 3: Starting 2 threads to do simple Get/Put operations. 
+2021-07-12 14:20:33:We'll see how many we can get done in 300 seconds...
+2021-07-12 14:20:33:Thread [0] on transaction 1
+2021-07-12 14:20:33:Thread [1] on transaction 1
+2021-07-12 14:20:34:Waiting for 2 threads to finish
+2021-07-12 14:21:44:Thread [1] on transaction 100001
+2021-07-12 14:21:44:Thread [0] on transaction 100001
+2021-07-12 14:22:58:Thread [1] on transaction 200001
+2021-07-12 14:22:59:Thread [0] on transaction 200001
+2021-07-12 14:24:08:Thread [1] on transaction 300001
+2021-07-12 14:24:09:Thread [0] on transaction 300001
+2021-07-12 14:25:13:Thread [1] on transaction 400001
+2021-07-12 14:25:14:Thread [0] on transaction 400001
+2021-07-12 14:25:33:thread [0] got 1431 Logical TPS
+2021-07-12 14:25:33:thread [1] got 1434 Logical TPS
+2021-07-12 14:25:33:...done
+2021-07-12 14:25:33:Step 4: Starting 2 threads to do Get/Optimistic Replace operations. 
+2021-07-12 14:25:33:We'll see how many we can get done in 300 seconds...
+2021-07-12 14:25:33:Starting 2 threads 
+2021-07-12 14:25:33:Thread [0] on transaction 1
+2021-07-12 14:25:33:Thread [1] on transaction 1
+2021-07-12 14:25:34:Waiting for 2 threads to finish
+2021-07-12 14:26:39:Thread [1] on transaction 100001
+2021-07-12 14:26:40:Thread [0] on transaction 100001
+2021-07-12 14:27:57:Thread [1] on transaction 200001
+2021-07-12 14:27:58:Thread [0] on transaction 200001
+2021-07-12 14:29:24:Thread [1] on transaction 300001
+2021-07-12 14:29:25:Thread [0] on transaction 300001

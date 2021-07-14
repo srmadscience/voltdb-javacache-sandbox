@@ -183,6 +183,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
     public void deregisterCacheEntryListener(CacheEntryListenerConfiguration<String, byte[]> arg0) {
 
         stopCacheEntryListenerThread();
+        setEvents(false);
         celc = null;
 
     }

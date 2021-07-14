@@ -221,6 +221,36 @@ class VoltDBCacheTest {
     }
 
     @Test
+    void testPutNull() {
+        try {
+
+            byte[] payload = null;
+
+            try {
+                c.put(FOO, payload);
+                fail("null payload not trapped");
+
+            } catch (NullPointerException e) {
+                VoltDBCache.msg("NPE Caught as planned");
+            }
+
+
+            try {
+                c.put(null, "foo".getBytes());
+                fail("null key not trapped");
+
+            } catch (NullPointerException e) {
+                VoltDBCache.msg("NPE Caught as planned");
+            }
+
+
+        } catch (Exception e) {
+            fail(e);
+        }
+
+    }
+
+    @Test
     void testReplace() {
         try {
 
@@ -880,17 +910,17 @@ class VoltDBCacheTest {
 
     @Test
     void testGetEvents() {
-        
-       c.setEvents(true);
-        
+
+        c.setEvents(true);
+
         boolean foo = c.getEvents();
 
         if (!foo) {
             fail("getEvents");
         }
 
-       c.setEvents(false);
-        
+        c.setEvents(false);
+
         boolean foo2 = c.getEvents();
 
         if (foo2) {
@@ -975,6 +1005,7 @@ class VoltDBCacheTest {
             c.putAll(aMap);
 
             // This will fail.
+            VoltDBCache.msg("Next statement will fail");
             Iterator it = c.iterator();
 
             fail("failed to fail when expected...");
@@ -982,6 +1013,8 @@ class VoltDBCacheTest {
         } catch (CacheException e) {
             if (!e.getMessage().startsWith(VoltDBCache.TOO_MUCH_DATA_REQUESTED)) {
                 fail(e);
+            } else {
+                VoltDBCache.msg("failed as expected");
             }
 
         } catch (Exception e) {

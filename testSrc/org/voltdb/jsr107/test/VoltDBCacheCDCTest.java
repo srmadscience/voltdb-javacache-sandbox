@@ -83,23 +83,23 @@ class VoltDBCacheCDCTest {
 
         c.deregisterCacheEntryListener(cacheEntryListenerConfig);
 
-        c.setEvents(true);
-
         c.registerCacheEntryListener(cacheEntryListenerConfig);
 
         MyCacheEntryListener<String, byte[]> cacheEntryListener = ((MyCacheEntryListenerFactory) theListenerFactory).getListener();
 
         try {
+            System.out.println("Waiting 30 seconds to see if any odd records show up...");
             Thread.sleep(30000);
         } catch (InterruptedException e) {
             fail(e);
         }
 
-        cacheEntryListener.resetCounters();
-
+ 
         if (cacheEntryListener.getCreated() != 0 || cacheEntryListener.getUpdated() != 0 || cacheEntryListener.getDeleted() != 0) {
             fail("early records");
         }
+
+        cacheEntryListener.resetCounters();
 
         final int insertCount = 1000;
         final int updateCount = 999;
@@ -127,7 +127,8 @@ class VoltDBCacheCDCTest {
             }
 
             try {
-                Thread.sleep(1);
+                Thread.sleep(1000);
+                System.out.println("Current status:" + cacheEntryListener);
             } catch (InterruptedException e) {
                 fail(e);
             }
@@ -137,6 +138,8 @@ class VoltDBCacheCDCTest {
         System.out.println(cacheEntryListener);
 
         System.out.println("time remaining = " + (timeoutMS - System.currentTimeMillis()  ));
+        
+        c.setEvents(false);
         
         if (System.currentTimeMillis() >= timeoutMS) {
             fail("timeout");
