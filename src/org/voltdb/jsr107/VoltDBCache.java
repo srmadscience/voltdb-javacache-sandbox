@@ -146,7 +146,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
     @Override
     public void clear() {
-        // NOOP - we don;t actually cache anything...
+        // NOOP - we don't actually cache anything...
     }
 
     @Override

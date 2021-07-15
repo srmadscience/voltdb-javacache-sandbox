@@ -33,8 +33,6 @@ import javax.cache.configuration.MutableCacheEntryListenerConfiguration;
 import org.voltdb.jsr107.VoltDBCache;
 import org.voltdb.jsr107.test.MyCacheEntryEventFilter;
 import org.voltdb.jsr107.test.MyCacheEntryFilterFactory;
-import org.voltdb.jsr107.test.MyCacheEntryListener;
-import org.voltdb.jsr107.test.MyCacheEntryListenerFactory;
 
 /**
  * Class to watch kv_deltas
@@ -70,29 +68,12 @@ class VoltDBCacheCDCWatcher {
                 .getListener();
 
         try {
-            Thread.sleep(30000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
 
         }
         
-        cacheEntryListener.resetCounters();
-
-//        final int insertCount = 1000;
-//        final int updateCount = 999;
-//        final int deleteCount = 998;
-//
-//        for (int i = 0; i < insertCount; i++) {
-//            c.put(prefix + i, "FRED".getBytes());
-//        }
-//
-//        for (int i = 0; i < updateCount; i++) {
-//            c.put(prefix + i, "FREDUPDATE".getBytes());
-//        }
-//
-//        for (int i = 0; i < deleteCount; i++) {
-//            c.remove(prefix + i);
-//        }
-//        
+        cacheEntryListener.resetCounters();      
 
         long timeoutMS = System.currentTimeMillis() + (durationSeconds * 1000);
 
@@ -103,8 +84,7 @@ class VoltDBCacheCDCWatcher {
             try {
                 msg(cacheEntryListener.toString());
                 Thread.sleep(1000);
-               // c.put(prefix+System.currentTimeMillis(), "foo".getBytes());
-              //
+
 
             } catch (InterruptedException e) {
 
@@ -113,10 +93,6 @@ class VoltDBCacheCDCWatcher {
         }
 
         msg(cacheEntryListener.toString());
-
-//        c.setEvents(false);
-//        c.deregisterCacheEntryListener(cacheEntryListenerConfig);
-//        c.close();
 
     }
 
