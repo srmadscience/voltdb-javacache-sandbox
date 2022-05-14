@@ -24,10 +24,10 @@ package org.voltdb.jsr107;
  */
 
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.cache.Cache;
 import javax.cache.event.CacheEntryEvent;
 import javax.cache.event.EventType;
@@ -43,7 +43,7 @@ import jsr107.AbstractEventTrackingProcedure;
 public class KVEvent extends CacheEntryEvent<String, byte[]> implements Iterable {
 
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -96,7 +96,7 @@ public class KVEvent extends CacheEntryEvent<String, byte[]> implements Iterable
     @Override
     public Iterator<KVEvent> iterator() {
 
-        List<KVEvent> events = new ArrayList<KVEvent>();
+        List<KVEvent> events = new ArrayList<>();
         events.add(this);
         return events.iterator();
     }

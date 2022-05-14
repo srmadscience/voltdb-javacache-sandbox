@@ -34,7 +34,7 @@ public class KVWrangler {
     /**
      * Working in the assumption that 'varbinaryPayload' is actually a Sting we
      * convert it to one.
-     * 
+     *
      * @param varbinaryPayload byte[]
      * @return A new String version of varbinaryPayload
      * @throws VoltAbortException

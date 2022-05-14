@@ -43,8 +43,8 @@ class VoltDBCacheCDCWatcher {
     VoltDBCache c = null;
     int durationSeconds;
     String prefix;
-    
-    public VoltDBCacheCDCWatcher(String hostnames, String cacheName, int durationSeconds,String prefix) {
+
+    public VoltDBCacheCDCWatcher(String hostnames, String cacheName, int durationSeconds, String prefix) {
         super();
         this.durationSeconds = durationSeconds;
         this.prefix = prefix;
@@ -59,7 +59,7 @@ class VoltDBCacheCDCWatcher {
         Factory<VerboseCacheEntryListener<String, byte[]>> theListenerFactory = new VerboseCacheEntryListenerFactory();
         Factory<MyCacheEntryEventFilter<String, byte[]>> theEventFactory = new MyCacheEntryFilterFactory(prefix);
 
-        MutableCacheEntryListenerConfiguration<String, byte[]> cacheEntryListenerConfig = new MutableCacheEntryListenerConfiguration<String, byte[]>(
+        MutableCacheEntryListenerConfiguration<String, byte[]> cacheEntryListenerConfig = new MutableCacheEntryListenerConfiguration<>(
                 theListenerFactory, theEventFactory, false, true);
 
         c.registerCacheEntryListener(cacheEntryListenerConfig);
@@ -72,19 +72,16 @@ class VoltDBCacheCDCWatcher {
         } catch (InterruptedException e) {
 
         }
-        
-        cacheEntryListener.resetCounters();      
+
+        cacheEntryListener.resetCounters();
 
         long timeoutMS = System.currentTimeMillis() + (durationSeconds * 1000);
 
-  
- 
         while (System.currentTimeMillis() < timeoutMS) {
 
             try {
                 msg(cacheEntryListener.toString());
                 Thread.sleep(1000);
-
 
             } catch (InterruptedException e) {
 
@@ -97,10 +94,8 @@ class VoltDBCacheCDCWatcher {
     }
 
     /**
-     * Watch topic kv_deltas. Params
-     * hostnames - comma delimited list of hostnames
-     * cachename - name of cache to watch
-     * durationseconds - how long to run for
+     * Watch topic kv_deltas. Params hostnames - comma delimited list of hostnames
+     * cachename - name of cache to watch durationseconds - how long to run for
      */
     public static void main(String[] args) {
 
@@ -124,7 +119,7 @@ class VoltDBCacheCDCWatcher {
 
     /**
      * Print a formatted message.
-     * 
+     *
      * @param message
      */
     public static void msg(String message) {

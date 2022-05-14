@@ -25,7 +25,9 @@ package org.voltdb.jsr107;
 
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+
 import javax.cache.CacheException;
+
 import org.voltdb.VoltTable;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.ProcedureCallback;

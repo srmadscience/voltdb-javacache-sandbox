@@ -24,6 +24,7 @@ package org.voltdb.jsr107.sandbox;
  */
 
 import java.io.Serializable;
+
 import javax.cache.event.CacheEntryCreatedListener;
 import javax.cache.event.CacheEntryEvent;
 import javax.cache.event.CacheEntryListenerException;
@@ -33,8 +34,8 @@ import javax.cache.event.CacheEntryUpdatedListener;
 import org.voltdb.jsr107.KVEvent;
 import org.voltdb.jsr107.VoltDBCache;
 
-public class VerboseCacheEntryListener<K, V> implements CacheEntryCreatedListener<K, V>, CacheEntryUpdatedListener<K, V>,
-        CacheEntryRemovedListener<K, V>, Serializable {
+public class VerboseCacheEntryListener<K, V> implements CacheEntryCreatedListener<K, V>,
+        CacheEntryUpdatedListener<K, V>, CacheEntryRemovedListener<K, V>, Serializable {
     private static final long serialVersionUID = 1L;
 
     int created = 0;
@@ -64,7 +65,6 @@ public class VerboseCacheEntryListener<K, V> implements CacheEntryCreatedListene
 
     }
 
-
     @SuppressWarnings("unused")
     @Override
     public void onUpdated(Iterable<CacheEntryEvent<? extends K, ? extends V>> events)
@@ -92,15 +92,16 @@ public class VerboseCacheEntryListener<K, V> implements CacheEntryCreatedListene
     }
 
     private void printEvent(String eventType, CacheEntryEvent<? extends K, ? extends V> event) {
-        
-       if (event instanceof KVEvent) {
-           
-           KVEvent aKVEvent  = (KVEvent)event;
-           VoltDBCache.msg(eventType + ":" + aKVEvent);
-       }
-        
+
+        if (event instanceof KVEvent) {
+
+            KVEvent aKVEvent = (KVEvent) event;
+            VoltDBCache.msg(eventType + ":" + aKVEvent);
+        }
+
     }
-   /**
+
+    /**
      * @return the deleted
      */
     public int getDeleted() {

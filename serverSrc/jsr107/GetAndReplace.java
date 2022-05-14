@@ -38,8 +38,8 @@ public class GetAndReplace extends AbstractEventTrackingProcedure {
             + "(c,k,v)\n"
             + "VALUES \n"
             + "(?,?,?);");
-    
- 
+
+
 
  	// @formatter:on
 
@@ -54,12 +54,12 @@ public class GetAndReplace extends AbstractEventTrackingProcedure {
 
             voltQueueSQL(upsertKV, c, k, v);
 
-            reportEvent(c, k, v, UPDATED,oldValues);
+            reportEvent(c, k, v, UPDATED, oldValues);
 
         }
 
         voltExecuteSQL(true);
-        
+
         return oldValues;
     }
 }

@@ -38,7 +38,7 @@ public class Replace extends AbstractEventTrackingProcedure {
 	            + "(c,k,v)\n"
 	            + "VALUES \n"
 	            + "(?,?,?);");
- 
+
 
  	// @formatter:on
 
@@ -51,7 +51,7 @@ public class Replace extends AbstractEventTrackingProcedure {
 
         if (oldValues[0].advanceRow()) {
 
-            reportEvent(c, k, newV, UPDATED,oldValues);
+            reportEvent(c, k, newV, UPDATED, oldValues);
             voltQueueSQL(upsertKV, c, k, newV);
             return voltExecuteSQL(true);
 

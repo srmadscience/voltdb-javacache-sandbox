@@ -30,7 +30,7 @@ import org.voltdb.VoltTable;
 public class RemoveAll extends VoltProcedure {
 
     // @formatter:off
-    
+
     public static final SQLStmt getParam = new SQLStmt(
             "SELECT param_value FROM kv_parameters WHERE param_name = ?;");
 
@@ -38,8 +38,8 @@ public class RemoveAll extends VoltProcedure {
             "DELETE FROM kv WHERE c = ?;");
 
     public static final SQLStmt exportAll = new SQLStmt(
-            "INSERT INTO kv_deltas (c,k,v,event_type) SELECT c,k,v,'" 
-            + AbstractEventTrackingProcedure.REMOVED 
+            "INSERT INTO kv_deltas (c,k,v,event_type) SELECT c,k,v,'"
+            + AbstractEventTrackingProcedure.REMOVED
             + "' event_type FROM kv WHERE c = ? ORDER BY k ;"); //TODO
 
  	// @formatter:on

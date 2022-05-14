@@ -32,7 +32,7 @@ public class MyCacheEntryFilterFactory implements Factory<MyCacheEntryEventFilte
     MyCacheEntryEventFilter<String, byte[]> listener;
 
     public MyCacheEntryFilterFactory(String prefix) {
-        listener = new MyCacheEntryEventFilter<String, byte[]>(prefix);
+        listener = new MyCacheEntryEventFilter<>(prefix);
     }
 
     @Override

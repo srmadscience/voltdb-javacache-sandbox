@@ -1,5 +1,21 @@
 package org.voltdb.jsr107;
 
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Properties;
+
+import javax.cache.configuration.CacheEntryListenerConfiguration;
+import javax.cache.configuration.Factory;
+import javax.cache.event.CacheEntryCreatedListener;
+import javax.cache.event.CacheEntryEventFilter;
+import javax.cache.event.CacheEntryExpiredListener;
+import javax.cache.event.CacheEntryListener;
+import javax.cache.event.CacheEntryRemovedListener;
+import javax.cache.event.CacheEntryUpdatedListener;
+import javax.cache.event.EventType;
+
 /* This file is part of VoltDB.
  * Copyright (C) 2008-2022 VoltDB Inc.
  *
@@ -25,22 +41,6 @@ package org.voltdb.jsr107;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
-
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Properties;
-import javax.cache.configuration.CacheEntryListenerConfiguration;
-import javax.cache.configuration.Factory;
-import javax.cache.event.CacheEntryCreatedListener;
-import javax.cache.event.CacheEntryEventFilter;
-import javax.cache.event.CacheEntryExpiredListener;
-import javax.cache.event.CacheEntryListener;
-import javax.cache.event.CacheEntryRemovedListener;
-import javax.cache.event.CacheEntryUpdatedListener;
-import javax.cache.event.EventType;
-
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
 /**
@@ -77,7 +77,7 @@ public class CacheEventConsumer implements Runnable {
     /**
      * Create a runnable instance of a class to poll the Kafka topic
      * console_messages
-     * 
+     *
      * @param hostnames - hostname1:9092,hostname2:9092 etc
      * @param string
      */
@@ -123,7 +123,7 @@ public class CacheEventConsumer implements Runnable {
 
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
                 for (ConsumerRecord<String, String> record : records) {
-          
+
                     KVEvent event = KVEvent.createEventFromKafka(cache, record.value().toString());
 
                     if (event.getCacheName().equals(cacheName)) {
@@ -166,7 +166,7 @@ public class CacheEventConsumer implements Runnable {
 
     /**
      * Print a formatted message.
-     * 
+     *
      * @param message
      */
     public static void msg(String message) {
@@ -179,7 +179,7 @@ public class CacheEventConsumer implements Runnable {
 
     /**
      * Print a formatted message.
-     * 
+     *
      * @param e
      */
     public static void msg(Exception e) {

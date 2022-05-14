@@ -30,6 +30,7 @@ import java.util.HashMap;
 import javax.cache.processor.EntryProcessor;
 import javax.cache.processor.EntryProcessorException;
 import javax.cache.processor.MutableEntry;
+
 import org.voltdb.SQLStmt;
 import org.voltdb.VoltTable;
 import org.voltdb.VoltType;
@@ -46,15 +47,15 @@ public class Invoke extends AbstractEventTrackingProcedure {
             + "(c,k,v)\n"
             + "VALUES \n"
             + "(?,?,?);");
-    
+
     public static final SQLStmt deleteKV = new SQLStmt(
             "DELETE FROM kv WHERE c = ? AND k = ?;");
- 
+
      	// @formatter:on
 
     // Map containing instantiated EntryProcessors to avoid overhead of doing it
     // each time.
-    HashMap<String, EntryProcessor<String, byte[], VoltTable[]>> processorMap = new HashMap<String, EntryProcessor<String, byte[], VoltTable[]>>();
+    HashMap<String, EntryProcessor<String, byte[], VoltTable[]>> processorMap = new HashMap<>();
 
     @SuppressWarnings("unchecked")
     public VoltTable[] run(String k, String c, String processorClassName, VoltTable paramsAsVoltTable)
@@ -110,7 +111,7 @@ public class Invoke extends AbstractEventTrackingProcedure {
                 this.setAppStatusCode(BAD_NEWINSTANCE_ARGUMENT);
                 return convertErrorToVoltTable(e);
             } catch (InvocationTargetException e) {
-                
+
                 this.setAppStatusCode(BAD_NEWINSTANCE_CONSTRUCTOR);
                 Throwable t = e.getCause();
                 return convertErrorToVoltTable(t);
@@ -146,10 +147,10 @@ public class Invoke extends AbstractEventTrackingProcedure {
 
         if (theEntry.exists()) {
             voltQueueSQL(upsertKV, c, k, theEntry.getValue());
-            reportEvent(c, k, theEntry.getValue(), UPDATED,oldValues);
+            reportEvent(c, k, theEntry.getValue(), UPDATED, oldValues);
         } else if (previouslyExisted) {
             voltQueueSQL(deleteKV, c, k);
-            reportEvent(c, k, theEntry.getValue(), REMOVED,oldValues);
+            reportEvent(c, k, theEntry.getValue(), REMOVED, oldValues);
         }
 
         voltExecuteSQL(true);
@@ -161,7 +162,7 @@ public class Invoke extends AbstractEventTrackingProcedure {
     /**
      * Used when we get a Java execution error. Since the error is happening on a
      * server we need to get it back to the client.
-     * 
+     *
      * @param e
      * @return the stack trace as a VoltTable....
      */
@@ -173,8 +174,8 @@ public class Invoke extends AbstractEventTrackingProcedure {
 
         t.addRow(e.toString());
 
-        for (int i = 0; i < stack.length; i++) {
-            t.addRow(stack[i].toString());
+        for (StackTraceElement element : stack) {
+            t.addRow(element.toString());
         }
 
         VoltTable[] tableArray = { t };

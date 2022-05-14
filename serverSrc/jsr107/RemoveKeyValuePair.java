@@ -55,7 +55,7 @@ public class RemoveKeyValuePair extends AbstractEventTrackingProcedure {
 
         if (oldValues[0].advanceRow()) {
 
-            reportEvent(c, k, v, REMOVED,oldValues);
+            reportEvent(c, k, v, REMOVED, oldValues);
             voltQueueSQL(deleteKV, c, k, v);
             return voltExecuteSQL(true);
 

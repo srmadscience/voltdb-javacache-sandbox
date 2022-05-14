@@ -62,7 +62,7 @@ public abstract class AbstractEventTrackingProcedure extends VoltProcedure {
             + "(c,k,v,event_type)\n" //TODO
             + "VALUES \n"
             + "(?,?,?,?);");
-    
+
  // @formatter:on
 
     public static String CREATED = "C";
@@ -86,9 +86,9 @@ public abstract class AbstractEventTrackingProcedure extends VoltProcedure {
         voltQueueSQL(getParam, cacheName, "ENABLE_EVENTS");
 
     }
-    
-    protected void reportEvent(String cacheName, String k, byte[] v, String eventType,  VoltTable[] results ) {
-   
+
+    protected void reportEvent(String cacheName, String k, byte[] v, String eventType, VoltTable[] results) {
+
         if (results[results.length - 1].advanceRow() && results[results.length - 1].getLong("param_value") == 1) {
             voltQueueSQL(exportEvent, cacheName, k, v, eventType);
             voltExecuteSQL();

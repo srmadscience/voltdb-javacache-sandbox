@@ -44,17 +44,17 @@ public class VoltParameterWrangler {
             return null;
         }
 
-        for (int i = 0; i < objectArray.length; i++) {
-            if (objectArray[i] instanceof Long || objectArray[i] instanceof Integer) {
-                t.addRow(objectArray[i], null, null, null, null);
-            } else if (objectArray[i] instanceof Double || objectArray[i] instanceof Float) {
-                t.addRow(null, objectArray[i], null, null, null);
-            } else if (objectArray[i] instanceof TimestampType || objectArray[i] instanceof Date) {
-                t.addRow(null, null, objectArray[i], null, null);
-            } else if (objectArray[i] instanceof String) {
-                t.addRow(null, null, null, objectArray[i], null);
-            } else if (objectArray[i] instanceof byte[]) {
-                t.addRow(null, null, null, null, objectArray[i]);
+        for (Object element : objectArray) {
+            if (element instanceof Long || element instanceof Integer) {
+                t.addRow(element, null, null, null, null);
+            } else if (element instanceof Double || element instanceof Float) {
+                t.addRow(null, element, null, null, null);
+            } else if (element instanceof TimestampType || element instanceof Date) {
+                t.addRow(null, null, element, null, null);
+            } else if (element instanceof String) {
+                t.addRow(null, null, null, element, null);
+            } else if (element instanceof byte[]) {
+                t.addRow(null, null, null, null, element);
             } else {
                 t.addRow(null, null, null, null, null);
             }
@@ -69,7 +69,7 @@ public class VoltParameterWrangler {
             return null;
         }
 
-        ArrayList<Object> paramArrayList = new ArrayList<Object>(t.getRowCount());
+        ArrayList<Object> paramArrayList = new ArrayList<>(t.getRowCount());
 
         while (t.advanceRow()) {
 

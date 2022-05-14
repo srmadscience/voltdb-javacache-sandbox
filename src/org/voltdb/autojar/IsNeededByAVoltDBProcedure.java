@@ -1,5 +1,7 @@
 package org.voltdb.autojar;
 
+import java.lang.annotation.ElementType;
+
 /* This file is part of VoltDB.
  * Copyright (C) 2008-2022 VoltDB Inc.
  *
@@ -23,11 +25,9 @@ package org.voltdb.autojar;
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.annotation.ElementType;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

@@ -40,7 +40,7 @@ public class Remove extends AbstractEventTrackingProcedure {
             + "FROM kv "
             + "WHERE c = ? AND k = ?;");
 
-	
+
 
  	// @formatter:on
 
@@ -52,7 +52,7 @@ public class Remove extends AbstractEventTrackingProcedure {
 
         if (oldValues[0].advanceRow()) {
 
-            reportEvent(c, k, oldValues[0].getVarbinary("v"), REMOVED,oldValues);
+            reportEvent(c, k, oldValues[0].getVarbinary("v"), REMOVED, oldValues);
             voltQueueSQL(deleteKV, c, k);
             return voltExecuteSQL(true);
 

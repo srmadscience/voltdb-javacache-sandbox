@@ -23,7 +23,6 @@ package org.voltdb.autojar;
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,12 +47,12 @@ import org.voltdb.client.Client;
 import org.voltdb.client.ClientResponse;
 
 /**
- * 
+ *
  * Finds all classes in a package that have the
  * 'org.voltdb.autojar.IsAVoltDBProcedure' or 'IsNeededByAVoltDBProcedure'
  * annotation and loads them into the database. This means you can avoid
  * manually creating JAR files and loading them with sqlcmd.
- * 
+ *
  * @author VoltDB
  *
  */
@@ -76,7 +75,7 @@ public class AutoJar {
     /**
      * Load all classes in package 'packagename' that have the IsAVoltDBProcedure or
      * IsNeededByAVoltDBProcedure annotation into VoltDB.
-     * 
+     *
      * @param packageName - e.g. 'com.mybiz.testprocs'
      * @param c           - A VoltDB client object.
      * @param filename    - optional, in case you want to keep JAR file afterwards.
@@ -122,19 +121,19 @@ public class AutoJar {
 
             // Find all classes we can see that have the 'IsAVoltDBProcedure'
             // annotation...
-            for (int i = 0; i < matchingClasses.length; i++) {
+            for (Class element : matchingClasses) {
 
-                msg("Checking class " + matchingClasses[i].getCanonicalName().replace(".", "/") + ".class");
+                msg("Checking class " + element.getCanonicalName().replace(".", "/") + ".class");
 
-                if (matchingClasses[i].isAnnotationPresent(IsAVoltDBProcedure.class)
-                        || matchingClasses[i].isAnnotationPresent(IsNeededByAVoltDBProcedure.class)) {
+                if (element.isAnnotationPresent(IsAVoltDBProcedure.class)
+                        || element.isAnnotationPresent(IsNeededByAVoltDBProcedure.class)) {
 
                     // Add to our JAR file...
-                    msg("Adding class " + matchingClasses[i].getCanonicalName().replace(".", "/") + ".class");
+                    msg("Adding class " + element.getCanonicalName().replace(".", "/") + ".class");
                     InputStream is = getClass().getClassLoader()
-                            .getResourceAsStream(matchingClasses[i].getCanonicalName().replace(".", "/") + ".class");
+                            .getResourceAsStream(element.getCanonicalName().replace(".", "/") + ".class");
 
-                    add(matchingClasses[i].getCanonicalName().replace(".", "/") + ".class", is, newJarFile);
+                    add(element.getCanonicalName().replace(".", "/") + ".class", is, newJarFile);
                 }
             }
 
@@ -169,7 +168,7 @@ public class AutoJar {
     /**
      * Obtained From:
      * https://stackoverflow.com/questions/520328/can-you-find-all-classes-in-a-package-using-reflection
-     * 
+     *
      * Scans all classes accessible from the context class loader which belong to
      * the given package and subpackages.
      *
@@ -185,12 +184,12 @@ public class AutoJar {
         assert classLoader != null;
         String path = packageName.replace('.', '/');
         Enumeration<URL> resources = classLoader.getResources(path);
-        List<File> dirs = new ArrayList<File>();
+        List<File> dirs = new ArrayList<>();
         while (resources.hasMoreElements()) {
             URL resource = resources.nextElement();
             dirs.add(new File(resource.getFile()));
         }
-        ArrayList<Class> classes = new ArrayList<Class>();
+        ArrayList<Class> classes = new ArrayList<>();
         for (File directory : dirs) {
             msg("Searching " + directory + " for  " + packageName);
             classes.addAll(findClasses(directory, packageName));
@@ -203,7 +202,7 @@ public class AutoJar {
     /**
      * Derived from
      * https://stackoverflow.com/questions/1429172/how-to-list-the-files-inside-a-jar-file
-     * 
+     *
      * @param packageName The base package
      * @return The classes
      * @throws ClassNotFoundException
@@ -212,7 +211,7 @@ public class AutoJar {
     @SuppressWarnings("rawtypes")
     private Class[] getClassesJAR(String packageName) throws ClassNotFoundException, IOException {
 
-        ArrayList<Class> classes = new ArrayList<Class>();
+        ArrayList<Class> classes = new ArrayList<>();
         CodeSource src = AutoJar.class.getProtectionDomain().getCodeSource();
         if (src != null) {
             URL jar = src.getLocation();
@@ -238,7 +237,7 @@ public class AutoJar {
     /**
      * Obtained from:
      * https://stackoverflow.com/questions/520328/can-you-find-all-classes-in-a-package-using-reflection
-     * 
+     *
      * Recursive method used to find all classes in a given directory and subdirs.
      *
      * @param directory   The base directory
@@ -250,7 +249,7 @@ public class AutoJar {
     @SuppressWarnings("rawtypes")
     private List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException {
 
-        List<Class> classes = new ArrayList<Class>();
+        List<Class> classes = new ArrayList<>();
         if (!directory.exists()) {
             return classes;
         }
@@ -271,7 +270,7 @@ public class AutoJar {
 
     /**
      * Add an entry to our JAR file.
-     * 
+     *
      * @param fileName
      * @param source
      * @param target

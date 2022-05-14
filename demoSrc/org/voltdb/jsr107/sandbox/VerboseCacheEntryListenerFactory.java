@@ -29,7 +29,7 @@ public class VerboseCacheEntryListenerFactory implements Factory<VerboseCacheEnt
 
     private static final long serialVersionUID = 1L;
 
-    VerboseCacheEntryListener<String, byte[]> listener = new VerboseCacheEntryListener<String, byte[]>();
+    VerboseCacheEntryListener<String, byte[]> listener = new VerboseCacheEntryListener<>();
 
     @Override
     public VerboseCacheEntryListener<String, byte[]> create() {

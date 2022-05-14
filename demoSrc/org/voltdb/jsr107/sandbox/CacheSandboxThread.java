@@ -115,7 +115,7 @@ public class CacheSandboxThread implements Runnable {
      */
     private void addUsers() {
 
-        HashMap<String, byte[]> ourMap = new HashMap<String, byte[]>();
+        HashMap<String, byte[]> ourMap = new HashMap<>();
         int batchCount = 0;
         long startMs = System.currentTimeMillis();
         long lastMessageMs = System.currentTimeMillis();
@@ -184,7 +184,7 @@ public class CacheSandboxThread implements Runnable {
 
     /**
      * Use the cache as simply as possible - gets followed by puts.
-     * 
+     *
      * @param userId
      */
     private void doSimplePuts(String userId) {
@@ -235,7 +235,7 @@ public class CacheSandboxThread implements Runnable {
 
     /**
      * Use the cache, but make sure the data hasn't changed since we saw it.
-     * 
+     *
      * @param userId
      */
     private void doOptimisticPuts(String userId) {
@@ -302,7 +302,7 @@ public class CacheSandboxThread implements Runnable {
     /**
      * Use the cache, but do the work using the 'invocation' interface, which makes
      * sure the data hasn't changed since we saw it.
-     * 
+     *
      * @param userId
      */
     private void doInvocations(String userId) {
@@ -318,14 +318,15 @@ public class CacheSandboxThread implements Runnable {
             shc.reportLatency("invoke_nothing_to_update", startMs, "", 1000);
         } else {
             shc.reportLatency("invoke_response_" + result.get().getAppStatus(), startMs, "", 1000);
-            Jsr197Sandbox.msg("error code of " + result.get().getAppStatus() + ". " + result.get().getResults()[0].toFormattedString());
+            Jsr197Sandbox.msg("error code of " + result.get().getAppStatus() + ". "
+                    + result.get().getResults()[0].toFormattedString());
         }
 
     }
 
     /**
      * Add a new pseudo-random flight to the record.
-     * 
+     *
      * @param ar
      */
     private void addNewFlight(AirmilesRecord ar) {

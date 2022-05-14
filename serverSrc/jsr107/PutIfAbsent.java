@@ -38,8 +38,8 @@ public class PutIfAbsent extends AbstractEventTrackingProcedure {
             + "(c,k,v)\n"
             + "VALUES \n"
             + "(?,?,?);");
-    
- 
+
+
 
  	// @formatter:on
 
@@ -51,7 +51,7 @@ public class PutIfAbsent extends AbstractEventTrackingProcedure {
         final VoltTable[] oldValues = voltExecuteSQL();
 
         if (oldValues[0].getRowCount() == 0) {
-            reportEvent(c, k, v, CREATED,oldValues);
+            reportEvent(c, k, v, CREATED, oldValues);
             voltQueueSQL(upsertKV, c, k, v);
 
         }

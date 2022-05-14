@@ -40,7 +40,6 @@ public class Jsr197Sandbox {
 
     public static void main(String[] args) {
 
-
         SafeHistogramCache shc = SafeHistogramCache.getInstance();
 
         msg("Parameters:" + Arrays.toString(args));
@@ -74,24 +73,23 @@ public class Jsr197Sandbox {
         if (Integer.parseInt(args[6]) > 0) {
             eraseUsers = true;
         }
-        
+
         File jarFile = new File(args[7]);
-        
-        if (! jarFile.exists()) {
+
+        if (!jarFile.exists()) {
             msg("File " + jarFile + " does not exist");
             System.exit(1);
         }
-        
-        if (! jarFile.canRead()) {
+
+        if (!jarFile.canRead()) {
             msg("File " + jarFile + " is not readable");
             System.exit(2);
         }
-        
-        if (! jarFile.isFile()) {
+
+        if (!jarFile.isFile()) {
             msg("File " + jarFile + " is not a file");
             System.exit(3);
         }
-        
 
         try {
             // Create an arbitrary binary payload
@@ -103,15 +101,14 @@ public class Jsr197Sandbox {
             Thread[] threadArray = new Thread[threads];
 
             for (int i = 0; i < threads; i++) {
-                cacheArray[i] = new VoltDBCache(hostlist, 2, "TestCache",
-                        jarFile.getAbsolutePath(),
-                        "jsr107.sandbox", 9092);
+                cacheArray[i] = new VoltDBCache(hostlist, 2, "TestCache", jarFile.getAbsolutePath(), "jsr107.sandbox",
+                        9092);
                 sbArray[i] = new CacheSandboxThread(cacheArray[i], userCount, durationSeconds, i, lobSize, threads,
                         batchSize);
             }
 
             long startMs = System.currentTimeMillis();
-            
+
             if (eraseUsers) {
 
                 cacheArray[0].loadEntryProcessors();
@@ -219,7 +216,7 @@ public class Jsr197Sandbox {
 
     /**
      * Print a formatted message.
-     * 
+     *
      * @param message
      */
     public static void msg(String message) {

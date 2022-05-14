@@ -22,8 +22,7 @@ package org.voltdb.jsr107.test;
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,9 +32,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import javax.cache.Cache.Entry;
 import javax.cache.CacheException;
 import javax.cache.CacheManager;
-import javax.cache.Cache.Entry;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -234,7 +233,6 @@ class VoltDBCacheTest {
                 VoltDBCache.msg("NPE Caught as planned");
             }
 
-
             try {
                 c.put(null, "foo".getBytes());
                 fail("null key not trapped");
@@ -242,7 +240,6 @@ class VoltDBCacheTest {
             } catch (NullPointerException e) {
                 VoltDBCache.msg("NPE Caught as planned");
             }
-
 
         } catch (Exception e) {
             fail(e);
@@ -372,7 +369,7 @@ class VoltDBCacheTest {
                 // Expected
             }
 
-            theSet = new HashSet<String>();
+            theSet = new HashSet<>();
 
             Map<String, byte[]> aMap = c.getAll(theSet);
             if (aMap.size() > 0) {
@@ -627,7 +624,7 @@ class VoltDBCacheTest {
                 fail("Empty Map");
             }
 
-            Set<String> keySet = new HashSet<String>();
+            Set<String> keySet = new HashSet<>();
 
             try {
                 c.removeAll(keySet);
@@ -824,7 +821,7 @@ class VoltDBCacheTest {
 
             c.putAll(aMap);
 
-            Set<String> keySet = new HashSet<String>();
+            Set<String> keySet = new HashSet<>();
 
             keySet.add(FOO + "20");
             keySet.add(FOO + "30");

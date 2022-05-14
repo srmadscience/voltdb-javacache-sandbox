@@ -29,7 +29,7 @@ public class MyCacheEntryListenerFactory implements Factory<MyCacheEntryListener
 
     private static final long serialVersionUID = 1L;
 
-    MyCacheEntryListener<String, byte[]> listener = new MyCacheEntryListener<String, byte[]>();
+    MyCacheEntryListener<String, byte[]> listener = new MyCacheEntryListener<>();
 
     @Override
     public MyCacheEntryListener<String, byte[]> create() {

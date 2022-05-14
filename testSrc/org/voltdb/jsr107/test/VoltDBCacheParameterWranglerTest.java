@@ -22,10 +22,10 @@ package org.voltdb.jsr107.test;
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -59,7 +59,6 @@ class VoltDBCacheParameterWranglerTest {
         c = new VoltDBCache("localhost", 10, "FRED", "", "", 9092);
         c.removeAll();
         c.setEvents(false);
-
 
     }
 

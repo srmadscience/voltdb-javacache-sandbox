@@ -36,7 +36,7 @@ public class BulkInvocationProcedureCallCallback implements ProcedureCallback {
 
     CountDownLatch latch;
     @SuppressWarnings("rawtypes")
-    Map<String, EntryProcessorResult> results = new HashMap<String, EntryProcessorResult>();
+    Map<String, EntryProcessorResult> results = new HashMap<>();
 
     public BulkInvocationProcedureCallCallback(CountDownLatch latch) {
 

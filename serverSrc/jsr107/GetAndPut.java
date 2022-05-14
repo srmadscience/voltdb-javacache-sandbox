@@ -38,8 +38,8 @@ public class GetAndPut extends AbstractEventTrackingProcedure {
             + "(c,k,v)\n"
             + "VALUES \n"
             + "(?,?,?);");
-    
- 
+
+
 
  	// @formatter:on
 
@@ -47,15 +47,15 @@ public class GetAndPut extends AbstractEventTrackingProcedure {
 
         voltQueueSQL(getV, c, k);
         queueEventCheck(c);
-        
+
         final VoltTable[] oldValues = voltExecuteSQL();
 
         voltQueueSQL(upsertKV, c, k, v);
 
         if (oldValues[0].advanceRow()) {
-            reportEvent(c, k, v, UPDATED,oldValues);
+            reportEvent(c, k, v, UPDATED, oldValues);
         } else {
-            reportEvent(c, k, v, CREATED,oldValues);
+            reportEvent(c, k, v, CREATED, oldValues);
         }
 
         voltExecuteSQL(true);

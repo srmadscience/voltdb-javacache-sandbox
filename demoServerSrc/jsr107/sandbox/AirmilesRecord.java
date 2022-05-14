@@ -24,6 +24,7 @@
 package jsr107.sandbox;
 
 import java.util.ArrayList;
+
 import org.voltdb.autojar.IsNeededByAVoltDBProcedure;
 import org.voltdb.types.TimestampType;
 
@@ -43,7 +44,7 @@ public class AirmilesRecord {
 
     public long loyaltySchemeTier = 0;
 
-    public ArrayList<AirmilesFlight> flightsTaken = new ArrayList<AirmilesFlight>();
+    public ArrayList<AirmilesFlight> flightsTaken = new ArrayList<>();
 
     public AirmilesRecord(String loyaltySchemeName, long loyaltySchemeNumber, long loyaltySchemePoints,
             byte[] randomLob) {
@@ -56,9 +57,9 @@ public class AirmilesRecord {
     }
 
     /**
-     * 
+     *
      * Add a flight to our record.
-     * 
+     *
      * @param fromAirport
      * @param toAirport
      * @param flightDate
@@ -91,8 +92,8 @@ public class AirmilesRecord {
         builder.append(loyaltySchemeTier);
         builder.append(", flightsTaken=[");
 
-        for (int i = 0; i < flightsTaken.size(); i++) {
-            builder.append(flightsTaken.get(i));
+        for (AirmilesFlight element : flightsTaken) {
+            builder.append(element);
             builder.append(",");
         }
 

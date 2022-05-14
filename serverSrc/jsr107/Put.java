@@ -38,8 +38,8 @@ public class Put extends AbstractEventTrackingProcedure {
             + "(c,k,v)\n"
             + "VALUES \n"
             + "(?,?,?);");
-    
- 
+
+
 
  	// @formatter:on
 
@@ -51,9 +51,9 @@ public class Put extends AbstractEventTrackingProcedure {
         final VoltTable[] oldValues = voltExecuteSQL();
 
         if (oldValues[0].getRowCount() == 0) {
-            reportEvent(c, k, v, CREATED,oldValues);
+            reportEvent(c, k, v, CREATED, oldValues);
         } else {
-            reportEvent(c, k, v, UPDATED,oldValues);
+            reportEvent(c, k, v, UPDATED, oldValues);
         }
 
         voltQueueSQL(upsertKV, c, k, v);

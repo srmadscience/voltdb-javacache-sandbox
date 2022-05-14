@@ -24,6 +24,7 @@ package org.voltdb.jsr107.test;
  */
 
 import java.io.Serializable;
+
 import javax.cache.event.CacheEntryCreatedListener;
 import javax.cache.event.CacheEntryEvent;
 import javax.cache.event.CacheEntryListenerException;

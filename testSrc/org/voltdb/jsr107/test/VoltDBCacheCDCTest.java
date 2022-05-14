@@ -22,8 +22,7 @@ package org.voltdb.jsr107.test;
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import javax.cache.configuration.Factory;
 import javax.cache.configuration.MutableCacheEntryListenerConfiguration;
@@ -76,7 +75,7 @@ class VoltDBCacheCDCTest {
         Factory<MyCacheEntryListener<String, byte[]>> theListenerFactory = new MyCacheEntryListenerFactory();
         Factory<MyCacheEntryEventFilter<String, byte[]>> theEventFactory = new MyCacheEntryFilterFactory(FRED_TEST_CDC);
 
-        MutableCacheEntryListenerConfiguration<String, byte[]> cacheEntryListenerConfig = new MutableCacheEntryListenerConfiguration<String, byte[]>(
+        MutableCacheEntryListenerConfiguration<String, byte[]> cacheEntryListenerConfig = new MutableCacheEntryListenerConfiguration<>(
                 theListenerFactory, theEventFactory, false, true);
 
         c.registerCacheEntryListener(cacheEntryListenerConfig);
@@ -85,7 +84,8 @@ class VoltDBCacheCDCTest {
 
         c.registerCacheEntryListener(cacheEntryListenerConfig);
 
-        MyCacheEntryListener<String, byte[]> cacheEntryListener = ((MyCacheEntryListenerFactory) theListenerFactory).getListener();
+        MyCacheEntryListener<String, byte[]> cacheEntryListener = ((MyCacheEntryListenerFactory) theListenerFactory)
+                .getListener();
 
         try {
             System.out.println("Waiting 30 seconds to see if any odd records show up...");
@@ -94,8 +94,8 @@ class VoltDBCacheCDCTest {
             fail(e);
         }
 
- 
-        if (cacheEntryListener.getCreated() != 0 || cacheEntryListener.getUpdated() != 0 || cacheEntryListener.getDeleted() != 0) {
+        if (cacheEntryListener.getCreated() != 0 || cacheEntryListener.getUpdated() != 0
+                || cacheEntryListener.getDeleted() != 0) {
             fail("early records");
         }
 
@@ -121,7 +121,8 @@ class VoltDBCacheCDCTest {
 
         while (System.currentTimeMillis() < timeoutMS) {
 
-            if (cacheEntryListener.getCreated() == insertCount && cacheEntryListener.getUpdated() == updateCount && cacheEntryListener.getDeleted() == deleteCount) {
+            if (cacheEntryListener.getCreated() == insertCount && cacheEntryListener.getUpdated() == updateCount
+                    && cacheEntryListener.getDeleted() == deleteCount) {
                 System.out.println("Received all records...");
                 break;
             }
@@ -137,10 +138,10 @@ class VoltDBCacheCDCTest {
 
         System.out.println(cacheEntryListener);
 
-        System.out.println("time remaining = " + (timeoutMS - System.currentTimeMillis()  ));
-        
+        System.out.println("time remaining = " + (timeoutMS - System.currentTimeMillis()));
+
         c.setEvents(false);
-        
+
         if (System.currentTimeMillis() >= timeoutMS) {
             fail("timeout");
         }
@@ -151,11 +152,10 @@ class VoltDBCacheCDCTest {
             fail(e);
         }
 
-        if (cacheEntryListener.getCreated() != insertCount || cacheEntryListener.getUpdated() != updateCount || cacheEntryListener.getDeleted() != deleteCount) {
+        if (cacheEntryListener.getCreated() != insertCount || cacheEntryListener.getUpdated() != updateCount
+                || cacheEntryListener.getDeleted() != deleteCount) {
             fail("late records");
         }
-        
-  
 
     }
 

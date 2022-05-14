@@ -50,10 +50,12 @@ import org.voltdb.client.ClientConfig;
 import org.voltdb.client.ClientFactory;
 import org.voltdb.client.ClientResponse;
 import org.voltdb.client.ProcCallException;
+
 import jsr107.VoltParameterWrangler;
 
 public class VoltDBCache implements Cache<String, byte[]> {
 
+    private static final String NETWORK_BUFFER_OVERFLOW = "VOLTDB ERROR: SQL ERROR Output from SQL stmt overflowed output/network buffer of 50mb";
     String hostnames;
     int retryAttempts;
     int retryPower = 2;
@@ -77,7 +79,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
     CacheEventConsumer eventConsumer = null;
 
     /**
-     * 
+     *
      * @param hostnames                 comma delimited list of hostnames that make
      *                                  up the VoltDB cluster
      * @param retryAttempts             How many times we try to speak to VoltDB
@@ -201,7 +203,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
     @Override
     public Map<String, byte[]> getAll(Set<? extends String> arg0) {
 
-        Map<String, byte[]> results = new HashMap<String, byte[]>();
+        Map<String, byte[]> results = new HashMap<>();
 
         checkNotClosed();
 
@@ -296,7 +298,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
         checkNotNull(arg2);
 
         // use invokeAll and then return the one item we are working with...
-        Set<String> keySet = new HashSet<String>();
+        Set<String> keySet = new HashSet<>();
         keySet.add(arg0);
         Object response = invokeAll(keySet, arg1, arg2);
         HashMap<String, VoltDBEntryProcessorResult> response2 = (HashMap<String, VoltDBEntryProcessorResult>) response;
@@ -627,15 +629,16 @@ public class VoltDBCache implements Cache<String, byte[]> {
     }
 
     private Object callVoltDBProcReturnLastRow(String procedureName, Object... params) {
-        return callVoltDBProcWithAllParams(procedureName, false, 1,params);
+        return callVoltDBProcWithAllParams(procedureName, false, 1, params);
     }
-    
+
     private Object callVoltDBProcRwturnSecondLastRow(String procedureName, Object... params) {
-        return callVoltDBProcWithAllParams(procedureName, false, 2,params);
+        return callVoltDBProcWithAllParams(procedureName, false, 2, params);
     }
 
     @SuppressWarnings("unchecked")
-    private Object callVoltDBProcWithAllParams(String procedureName, boolean wantKVData, int offsetFromLast, Object... params) {
+    private Object callVoltDBProcWithAllParams(String procedureName, boolean wantKVData, int offsetFromLast,
+            Object... params) {
 
         Object answer = null;
         String errorStatus = null;
@@ -650,7 +653,8 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
                 if (cr.getStatus() == ClientResponse.SUCCESS) {
                     VoltTable[] resultsTables = cr.getResults();
-                    if (resultsTables.length > 0 && resultsTables[resultsTables.length - offsetFromLast].getRowCount() > 0) {
+                    if (resultsTables.length > 0
+                            && resultsTables[resultsTables.length - offsetFromLast].getRowCount() > 0) {
 
                         if (wantKVData) {
 
@@ -691,7 +695,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
                 msg(errorStatus);
 
                 if (e.getMessage().startsWith(
-                        "VOLTDB ERROR: SQL ERROR Output from SQL stmt overflowed output/network buffer of 50mb")) {
+                        NETWORK_BUFFER_OVERFLOW)) {
                     // This is non-recoverable...don't retry...
                     throw new CacheException(TOO_MUCH_DATA_REQUESTED);
                 }
@@ -741,9 +745,9 @@ public class VoltDBCache implements Cache<String, byte[]> {
     }
 
     /**
-     * 
+     *
      * Connect to VoltDB using native APIS
-     * 
+     *
      * @param commaDelimitedHostnames
      * @return
      * @throws Exception
@@ -763,10 +767,10 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
             String[] hostnameArray = commaDelimitedHostnames.split(",");
 
-            for (int i = 0; i < hostnameArray.length; i++) {
-                msg("Connect to " + hostnameArray[i] + "...");
+            for (String element : hostnameArray) {
+                msg("Connect to " + element + "...");
                 try {
-                    client.createConnection(hostnameArray[i]);
+                    client.createConnection(element);
                 } catch (Exception e) {
                     msg(e.getMessage());
                 }
@@ -789,7 +793,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
     /**
      * Print a formatted message.
-     * 
+     *
      * @param message
      */
     public static void msg(String message) {
@@ -802,7 +806,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
     /**
      * Print a formatted message.
-     * 
+     *
      * @param e
      */
     public static void msg(Exception e) {
@@ -821,13 +825,13 @@ public class VoltDBCache implements Cache<String, byte[]> {
     }
 
     /**
-     * 
+     *
      * Turn on or disable change data capture
      * <p>
      * WARNING: Just because you called this doesn't mean It will stick.
      * <p>
      * Somebody else could also call it and undo what you did...
-     * 
+     *
      * @param enables or disables change data capture
      */
     public void setEvents(boolean events) {
