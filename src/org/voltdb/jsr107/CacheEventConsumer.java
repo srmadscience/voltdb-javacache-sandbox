@@ -43,6 +43,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * Runnable class to read Kafka messages and log them.
  *
@@ -63,7 +65,7 @@ public class CacheEventConsumer implements Runnable {
     /**
      * Keep running until told to stop..
      */
-    boolean keepGoing = true;
+    AtomicBoolean keepGoing = new AtomicBoolean(true);
 
     CacheEntryListenerConfiguration<String, byte[]> celc;
 
@@ -106,20 +108,20 @@ public class CacheEventConsumer implements Runnable {
             filter = filterFactory.create();
         }
 
+        Properties props = new Properties();
+        props.put("bootstrap.servers", kafkaHostnames);
+        props.put("group.id", cacheName + System.currentTimeMillis());
+        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("auto.commit.interval.ms", "100");
+        props.put("auto.offset.reset", "latest");
+
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
+        consumer.subscribe(Arrays.asList("kv_deltas"));
+
         try {
 
-            Properties props = new Properties();
-            props.put("bootstrap.servers", kafkaHostnames);
-            props.put("group.id", cacheName + System.currentTimeMillis());
-            props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-            props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-            props.put("auto.commit.interval.ms", "100");
-            props.put("auto.offset.reset", "latest");
-
-            KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
-            consumer.subscribe(Arrays.asList("kv_deltas"));
-
-            while (keepGoing) {
+            while (keepGoing.get()) {
 
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100));
                 for (ConsumerRecord<String, String> record : records) {
@@ -148,10 +150,10 @@ public class CacheEventConsumer implements Runnable {
 
             }
 
-            consumer.close();
-
         } catch (Exception e1) {
             CacheEventConsumer.msg(e1);
+        } finally {
+            consumer.close();
         }
 
     }
@@ -160,7 +162,7 @@ public class CacheEventConsumer implements Runnable {
      * Stop polling for messages and exit.
      */
     public void stop() {
-        keepGoing = false;
+        keepGoing.set(false);
 
     }
 
