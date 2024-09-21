@@ -1,3 +1,6 @@
+<img title="Volt Active Data" alt="Volt Active Data Logo" src="http://52.210.27.140:8090/voltdb-awswrangler-servlet/VoltActiveData.png?repo=voltdb-javacache-sandbox">
+
+
 # voltdb-javacache-sandbox
 
 voltdb-javacache-sandbox is a Proof-Of-Concept implementation of a [JSR107](https://github.com/jsr107/jsr107spec) compliant Java Cache.

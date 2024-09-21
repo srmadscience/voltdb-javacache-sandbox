@@ -694,8 +694,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
                 errorStatus = e.getClass().getName() + ":" + e.getMessage();
                 msg(errorStatus);
 
-                if (e.getMessage().startsWith(
-                        NETWORK_BUFFER_OVERFLOW)) {
+                if (e.getMessage().startsWith(NETWORK_BUFFER_OVERFLOW)) {
                     // This is non-recoverable...don't retry...
                     throw new CacheException(TOO_MUCH_DATA_REQUESTED);
                 }
