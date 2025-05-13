@@ -760,7 +760,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
             config = new ClientConfig(); // "admin", "idontknow");
             config.setTopologyChangeAware(true);
-            config.setReconnectOnConnectionLoss(true);
+            //config.setReconnectOnConnectionLoss(true);
 
             client = ClientFactory.createClient(config);
 

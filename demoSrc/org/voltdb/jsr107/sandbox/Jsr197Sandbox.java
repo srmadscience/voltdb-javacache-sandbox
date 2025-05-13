@@ -44,8 +44,8 @@ public class Jsr197Sandbox {
 
         msg("Parameters:" + Arrays.toString(args));
 
-        if (args.length != 8) {
-            msg("Usage: hostnames usercount threads durationseconds batchsize lobsize eraseusers1_or_0 voltdb-javacache-demo-client.jar_location");
+        if (args.length != 9) {
+            msg("Usage: hostnames usercount threads durationseconds batchsize lobsize eraseusers1_or_0 enable_events_1_or_0 voltdb-javacache-demo-client.jar_location");
             System.exit(1);
         }
 
@@ -67,14 +67,20 @@ public class Jsr197Sandbox {
         // How big the arbitrary binary payload is.
         int lobSize = Integer.parseInt(args[5]);
 
-        // How big the arbitrary binary payload is.
         boolean eraseUsers = false;
 
         if (Integer.parseInt(args[6]) > 0) {
             eraseUsers = true;
         }
 
-        File jarFile = new File(args[7]);
+        // enable events
+        boolean enableEvents = false;
+
+        if (Integer.parseInt(args[7]) > 0) {
+            enableEvents = true;
+        }
+
+        File jarFile = new File(args[8]);
 
         if (!jarFile.exists()) {
             msg("File " + jarFile + " does not exist");
@@ -107,12 +113,13 @@ public class Jsr197Sandbox {
                         batchSize);
             }
 
+            cacheArray[0].setEvents(enableEvents);
+
             long startMs = System.currentTimeMillis();
 
             if (eraseUsers) {
 
                 cacheArray[0].loadEntryProcessors();
-                cacheArray[0].setEvents(false);
 
                 msg("Step 1: Remove any old records...");
                 cacheArray[0].removeAll();
@@ -201,8 +208,9 @@ public class Jsr197Sandbox {
 
             msg(shc.toString());
 
-            msg("Time to create " + userCount + " records in batches of " + batchSize + ": "
-                    + shc.get("putAllTotal").getEventTotal());
+            msg("Time to create " + userCount + " records in batches of " + batchSize + ": " +
+
+                    +shc.get("putAllTotal").getEventTotal());
             msg("Simple Get/Put operations in " + durationSeconds + " seconds: "
                     + shc.get("putExists").getEventTotal());
             msg("Get/Optimistic Replace in " + durationSeconds + " seconds: " + shc.get("replace_ok").getEventTotal());

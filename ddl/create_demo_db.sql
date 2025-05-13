@@ -25,7 +25,7 @@ GROUP BY c, event_type;
 
 CREATE PROCEDURE kv__promBL AS
 BEGIN
-select 'parameter_'||param_name statname,  'parameter name' stathelp  ,param_value statvalue from kv_parameters order by param_name;
+select 'category_'||c||'_parameter_'||param_name statname,  'parameter name' stathelp  ,param_value statvalue from kv_parameters order by param_name;
 select 'category_'||c statname,  'kv classes' stathelp  ,how_many statvalue from kv_table_stats order by c;
 select 'delta_'||c ||'_'||event_type statname,  'kv deltas' stathelp  ,how_many statvalue from kv_deltas_stats order by c, event_type;
 END;
