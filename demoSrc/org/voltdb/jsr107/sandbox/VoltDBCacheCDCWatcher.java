@@ -48,7 +48,7 @@ class VoltDBCacheCDCWatcher {
         super();
         this.durationSeconds = durationSeconds;
         this.prefix = prefix;
-        c = new VoltDBCache(hostnames, 10, cacheName, "", "", 9092);
+        c = new VoltDBCache(hostnames, 10, cacheName,  "", 9092);
     }
 
     /**

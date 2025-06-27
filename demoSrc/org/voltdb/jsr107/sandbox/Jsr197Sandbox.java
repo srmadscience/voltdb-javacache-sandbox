@@ -44,8 +44,8 @@ public class Jsr197Sandbox {
 
         msg("Parameters:" + Arrays.toString(args));
 
-        if (args.length != 9) {
-            msg("Usage: hostnames usercount threads durationseconds batchsize lobsize eraseusers1_or_0 enable_events_1_or_0 voltdb-javacache-demo-client.jar_location");
+        if (args.length != 8) {
+            msg("Usage: hostnames usercount threads durationseconds batchsize lobsize eraseusers1_or_0 enable_events_1_or_0");
             System.exit(1);
         }
 
@@ -80,23 +80,6 @@ public class Jsr197Sandbox {
             enableEvents = true;
         }
 
-        File jarFile = new File(args[8]);
-
-        if (!jarFile.exists()) {
-            msg("File " + jarFile + " does not exist");
-            System.exit(1);
-        }
-
-        if (!jarFile.canRead()) {
-            msg("File " + jarFile + " is not readable");
-            System.exit(2);
-        }
-
-        if (!jarFile.isFile()) {
-            msg("File " + jarFile + " is not a file");
-            System.exit(3);
-        }
-
         try {
             // Create an arbitrary binary payload
             byte[] randomLob = new byte[lobSize];
@@ -107,7 +90,7 @@ public class Jsr197Sandbox {
             Thread[] threadArray = new Thread[threads];
 
             for (int i = 0; i < threads; i++) {
-                cacheArray[i] = new VoltDBCache(hostlist, 2, "TestCache", jarFile.getAbsolutePath(), "jsr107.sandbox",
+                cacheArray[i] = new VoltDBCache(hostlist, 2, "TestCache",  "jsr107.sandbox",
                         9092);
                 sbArray[i] = new CacheSandboxThread(cacheArray[i], userCount, durationSeconds, i, lobSize, threads,
                         batchSize);
