@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
@@ -189,12 +190,17 @@ public class AutoJar {
             URL resource = resources.nextElement();
             File newFile = new File(resource.getFile());
             msg("Adding file " + newFile.getAbsolutePath());
-            dirs.add(newFile);
+
+            if (dirs.contains(newFile)) {
+                msg("File " + newFile.getAbsolutePath() + " already added...");
+            } else {
+                dirs.add(newFile);
+            }
         }
         ArrayList<Class> classes = new ArrayList<>();
         for (File directory : dirs) {
             msg("Searching " + directory + " for  " + packageName);
-            classes.addAll(findClasses(directory, packageName));
+            classes.addAll(findClasses(directory, packageName, classes));
 
         }
 
@@ -243,14 +249,16 @@ public class AutoJar {
      *
      * Recursive method used to find all classes in a given directory and subdirs.
      *
-     * @param directory   The base directory
-     * @param packageName The package name for classes found inside the base
-     *                    directory
+     * @param directory       The base directory
+     * @param packageName     The package name for classes found inside the base
+     *                        directory
+     * @param existingClasses
      * @return The classes
      * @throws ClassNotFoundException
      */
     @SuppressWarnings("rawtypes")
-    private List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException {
+    private List<Class> findClasses(File directory, String packageName, List<Class> existingClasses)
+            throws ClassNotFoundException {
 
         List<Class> classes = new ArrayList<>();
         if (!directory.exists()) {
@@ -262,10 +270,34 @@ public class AutoJar {
             msg("Found " + file.getAbsolutePath());
             if (file.isDirectory()) {
                 assert !file.getName().contains(".");
-                classes.addAll(findClasses(file, packageName + "." + file.getName()));
+                classes.addAll(findClasses(file, packageName + "." + file.getName(), classes));
             } else if (file.getName().endsWith(".class")) {
-                classes.add(
-                        Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+
+                // Only add class if we don't have one with the same name... in a test
+                // directory, for example.
+
+                boolean notAdded = true;
+                Iterator<Class> classIterator = existingClasses.iterator();
+
+                while (classIterator.hasNext()) {
+                    Class existingClass = classIterator.next();
+
+                    String existingClassName = existingClass.getSimpleName() + ".class";
+                    String newClassName = file.getName();
+                    if (existingClassName.equals(newClassName)) {
+                        notAdded = false;
+                        break;
+                    }
+                }
+
+                if (notAdded) {
+                    msg("Adding " + file.getAbsolutePath());
+                    classes.add(Class
+                            .forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
+
+                } else {
+                    msg("Ignoring " + file.getAbsolutePath() + " - we already have one");
+                }
             }
         }
         return classes;

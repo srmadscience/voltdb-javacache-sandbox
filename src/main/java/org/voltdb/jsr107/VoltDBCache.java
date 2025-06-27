@@ -56,7 +56,7 @@ import jsr107.VoltParameterWrangler;
 
 public class VoltDBCache implements Cache<String, byte[]> {
 
-    private static final String NETWORK_BUFFER_OVERFLOW = "VOLTDB ERROR: SQL ERROR Output from SQL stmt overflowed output/network buffer of 50mb";
+    private static final String NETWORK_BUFFER_OVERFLOW = "SQL ERROR Output from SQL stmt overflowed output/network buffer of 50mb";
     String hostnames;
     int retryAttempts;
     int retryPower = 2;
@@ -92,8 +92,8 @@ public class VoltDBCache implements Cache<String, byte[]> {
      *                                  name our Invokeable classes use
      * @param kafkaPort                 - kafka port number on VoltDB, usually 9092
      */
-    public VoltDBCache(String hostnames, int retryAttempts, String cacheName, 
-            String entryProcessorPackageName, int kafkaPort) {
+    public VoltDBCache(String hostnames, int retryAttempts, String cacheName, String entryProcessorPackageName,
+            int kafkaPort) {
         super();
         this.hostnames = hostnames;
         this.retryAttempts = retryAttempts;
@@ -207,10 +207,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
         CountDownLatch latch = new CountDownLatch(arg0.size());
         BulkGetCallback bgcc = new BulkGetCallback(latch, results);
 
-        Iterator<?> it = arg0.iterator();
-        while (it.hasNext()) {
-
-            String key = (String) it.next();
+        for (String key : arg0) {
 
             try {
                 c.callProcedure(bgcc, "GetKV", key, cacheName);
@@ -526,11 +523,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
         CountDownLatch latch = new CountDownLatch(arg0.size());
         BulkProcedureCallCallback bpcc = new BulkProcedureCallCallback(latch);
 
-        Iterator<?> it = arg0.iterator();
-
-        while (it.hasNext()) {
-
-            String key = (String) it.next();
+        for (String key : arg0) {
 
             try {
                 c.callProcedure(bpcc, "Remove", key, cacheName);
@@ -615,7 +608,6 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
         if (eventConsumer != null) {
             eventConsumer.stop();
-            eventConsumerRunner.stop();
             eventConsumerRunner = null;
             eventConsumer = null;
 
@@ -668,8 +660,9 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
                         } else {
                             resultsTables[resultsTables.length - offsetFromLast].advanceRow();
-                            final VoltType colType = resultsTables[resultsTables.length - offsetFromLast].getColumnType(0);
-                            answer = resultsTables[resultsTables.length - offsetFromLast].get(0,colType );
+                            final VoltType colType = resultsTables[resultsTables.length - offsetFromLast]
+                                    .getColumnType(0);
+                            answer = resultsTables[resultsTables.length - offsetFromLast].get(0, colType);
                         }
                     }
 
@@ -690,7 +683,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
                 errorStatus = e.getClass().getName() + ":" + e.getMessage();
                 msg(errorStatus);
 
-                if (e.getMessage().startsWith(NETWORK_BUFFER_OVERFLOW)) {
+                if (e.getMessage().indexOf(NETWORK_BUFFER_OVERFLOW) > -1) {
                     // This is non-recoverable...don't retry...
                     throw new CacheException(TOO_MUCH_DATA_REQUESTED);
                 }
@@ -756,7 +749,7 @@ public class VoltDBCache implements Cache<String, byte[]> {
 
             config = new ClientConfig(); // "admin", "idontknow");
             config.setTopologyChangeAware(true);
-            //config.setReconnectOnConnectionLoss(true);
+            // config.setReconnectOnConnectionLoss(true);
 
             client = ClientFactory.createClient(config);
 
