@@ -30,5 +30,5 @@ DT=`date '+%Y%m%d_%H%M%S'`
 
 for i in 2 4 8 12 16 20 24 28 32
 do
-        java ${JVMOPTS} -jar voltdb-javacache-demo-client.jar  `cat $HOME/.vdbhostnames` ${USERCOUNT} $i 300 100 1000  1 0 > ../results/${DT}_$i.lst
+        java ${JVMOPTS} -jar voltdb-javacache-demo-client.jar  `cat $HOME/.vdbhostnames` ${USERCOUNT} $i 300 100 1000  0 0 > ../results/${DT}_$i.lst
 done
