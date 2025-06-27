@@ -2,7 +2,9 @@
 
 
 
-CREATE PROCEDURE getSchemeMember AS
+CREATE PROCEDURE getSchemeMember 
+PARTITION ON TABLE KV COLUMN K PARAMETER 1
+AS
 select k
      , field(varbinary_to_varchar(v),'loyaltySchemeNumber') loyaltySchemeNumber
      , field(varbinary_to_varchar(v),'loyaltySchemeName') loyaltySchemeName
